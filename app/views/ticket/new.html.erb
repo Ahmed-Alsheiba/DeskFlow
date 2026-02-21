@@ -1,0 +1,45 @@
+<%= form_with model: @ticket do |f| %>
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :status %>
+    <%= f.select :status , ['Open', 'In Progress', 'Closed'] %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :category %>
+    <%= f.select :category, ['Hardware', 'Software', 'Network', 'POS', 'PMS', 'Other'] %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :priority %>
+    <%= f.select :priority, ['Low', 'Medium', 'High'] %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :location %>
+    <%= f.text_field :location %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :submitter_name %>
+    <%= f.text_field :submitter_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :assigned_to %>
+    <%= f.text_field :assigned_to %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
