@@ -1,45 +1,56 @@
+<h1 class="text-2xl font-bold mb-4 justify-self-center">New Ticket</h1>
 <%= form_with model: @ticket do |f| %>
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
+  <div class="border w-3/4 p-4 rounded bg-gray-100 justify-items-center justify-self-center">
+    <div class="field w-2/3 mb-4">
+      <%= f.label :category, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.select :category, ['Hardware', 'Software', 'Network', 'POS', 'PMS', 'Other'], class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
+    <div class="field w-2/3 mb-4">
+      <%= f.label :priority, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.select :priority, ['Low', 'Medium', 'High'], class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :status %>
-    <%= f.select :status , ['Open', 'In Progress', 'Closed'] %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :category %>
-    <%= f.select :category, ['Hardware', 'Software', 'Network', 'POS', 'PMS', 'Other'] %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :priority %>
-    <%= f.select :priority, ['Low', 'Medium', 'High'] %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :location %>
-    <%= f.text_field :location %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :submitter_name %>
-    <%= f.text_field :submitter_name %>
-  </div>
+    <div class="field w-2/3 mb-4">
+      <%= f.label :status, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.select :status , ['Open', 'In Progress', 'Closed'], class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
+    
+    <div class="field w-2/3 mb-4">
+      <%= f.label :title, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.text_field :title, class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :assigned_to %>
-    <%= f.text_field :assigned_to %>
-  </div>
+    <div class="field w-2/3 mb-4">
+      <%= f.label :description, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.text_area :description, class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
+    
+    <div class="field w-2/3 mb-4">
+      <%= f.label :location, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.text_field :location, class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
+    
+    <div class="field w-2/3 mb-4">
+      <%= f.label :submitted_by, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.text_field :submitter_name, class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit %>
+    <div class="field w-2/3 mb-4">
+      <%= f.label :assign_to, class: "text-sm font-medium text-gray-700 mb-1" %>
+      <br>
+      <%= f.text_field :assigned_to, class: "border rounded w-3/4 px-3 py-2" %>
+    </div>
+
+    <div class="bg-blue-500 text-white px-4 py-2 rounded">
+      <%= f.submit %>
+    </div>
   </div>
 <% end %>

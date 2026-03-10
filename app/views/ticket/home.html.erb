@@ -1,7 +1,11 @@
-<h1 class="">Hello world</h1>
+<h1 class="text-2xl font-bold mb-4">Tickets</h1>
 <% @tickets.each do |ticket| %>
-  <div class="ticket">
+  <div class="w-1/2 bg-gray-200 p-4 mb-4 rounded">
     <h2><%= ticket.title %></h2>
     <p><%= ticket.description %></p>
+    <p><%= ticket.status %></p>
   </div>
 <% end %>
+
+<br>
+<%= link_to "New Ticket", new_ticket_path, class: "bg-blue-500 text-white px-4 py-2 rounded" %>
