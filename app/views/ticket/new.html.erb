@@ -1,56 +1,53 @@
-<h1 class="text-2xl font-bold mb-4 justify-self-center">New Ticket</h1>
 <%= form_with model: @ticket do |f| %>
-  <div class="border w-3/4 p-4 rounded bg-gray-100 justify-items-center justify-self-center">
-    <div class="field w-2/3 mb-4">
-      <%= f.label :category, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.select :category, ['Hardware', 'Software', 'Network', 'POS', 'PMS', 'Other'], class: "border rounded w-3/4 px-3 py-2" %>
+  <section class="max-w-3xl mx-auto bg-white border border-slate-200 border-l-4 border-l-blue-400 rounded-lg p-6 shadow-sm">
+    <h1 class="text-2xl font-bold mb-6 text-slate-900">New Ticket</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div>
+        <%= f.label :category, class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.select :category, ["Hardware", "Software", "Network", "POS", "PMS", "Other"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
+
+      <div>
+        <%= f.label :priority, class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.select :priority, ["Low", "Medium", "High"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
+
+      <div>
+        <%= f.label :status, class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.select :status, ["Open", "In Progress", "Closed"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
+
+      <div>
+        <%= f.label :location, class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.text_field :location, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
     </div>
 
-    <div class="field w-2/3 mb-4">
-      <%= f.label :priority, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.select :priority, ['Low', 'Medium', 'High'], class: "border rounded w-3/4 px-3 py-2" %>
+    <div class="mb-4">
+      <%= f.label :title, class: "block text-sm font-medium text-slate-700 mb-1" %>
+      <%= f.text_field :title, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
     </div>
 
-    <div class="field w-2/3 mb-4">
-      <%= f.label :status, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.select :status , ['Open', 'In Progress', 'Closed'], class: "border rounded w-3/4 px-3 py-2" %>
-    </div>
-    
-    <div class="field w-2/3 mb-4">
-      <%= f.label :title, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.text_field :title, class: "border rounded w-3/4 px-3 py-2" %>
+    <div class="mb-4">
+      <%= f.label :description, class: "block text-sm font-medium text-slate-700 mb-1" %>
+      <%= f.text_area :description, rows: 4, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
     </div>
 
-    <div class="field w-2/3 mb-4">
-      <%= f.label :description, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.text_area :description, class: "border rounded w-3/4 px-3 py-2" %>
-    </div>
-    
-    <div class="field w-2/3 mb-4">
-      <%= f.label :location, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.text_field :location, class: "border rounded w-3/4 px-3 py-2" %>
-    </div>
-    
-    <div class="field w-2/3 mb-4">
-      <%= f.label :submitted_by, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.text_field :submitter_name, class: "border rounded w-3/4 px-3 py-2" %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <%= f.label :submitter_name, "Submitted By", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.text_field :submitter_name, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
+
+      <div>
+        <%= f.label :assigned_to, "Assign To", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.text_field :assigned_to, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      </div>
     </div>
 
-    <div class="field w-2/3 mb-4">
-      <%= f.label :assign_to, class: "text-sm font-medium text-gray-700 mb-1" %>
-      <br>
-      <%= f.text_field :assigned_to, class: "border rounded w-3/4 px-3 py-2" %>
+    <div class="flex items-center gap-3">
+      <%= f.submit "Create Ticket", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+      <%= link_to "Back to Tickets", root_path, class: "px-4 py-2 rounded border border-slate-300 text-slate-700" %>
     </div>
-
-    <div class="bg-blue-500 text-white px-4 py-2 rounded">
-      <%= f.submit %>
-    </div>
-  </div>
+  </section>
 <% end %>
