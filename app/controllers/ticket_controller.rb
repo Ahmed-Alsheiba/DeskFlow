@@ -1,6 +1,6 @@
 class TicketController < ApplicationController
   def home
-    @tickets = Ticket.all
+    @pagy, @tickets = pagy(Ticket.all, limit: 6)
   end
   def new
     @ticket = Ticket.new

@@ -8,3 +8,56 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.pagy.series-nav {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 1.25rem;
+}
+
+.pagy.series-nav a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.25rem;
+	height: 2.25rem;
+	padding: 0 0.75rem;
+	border-radius: 0.5rem;
+	border: 1px solid #cbd5e1;
+	background: #ffffff;
+	color: #334155;
+	font-weight: 600;
+	font-size: 0.875rem;
+	line-height: 1;
+	text-decoration: none;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.pagy.series-nav a[href]:hover {
+	background: #eff6ff;
+	border-color: #93c5fd;
+	color: #1d4ed8;
+}
+
+.pagy.series-nav a[aria-current="page"] {
+	background: #3b82f6;
+	border-color: #3b82f6;
+	color: #ffffff;
+}
+
+.pagy.series-nav a[aria-disabled="true"] {
+	background: #f8fafc;
+	color: #94a3b8;
+	border-color: #e2e8f0;
+	cursor: default;
+}
+
+.pagy.series-nav a[role="separator"] {
+	min-width: auto;
+	padding: 0 0.4rem;
+	border-color: transparent;
+	background: transparent;
+}
