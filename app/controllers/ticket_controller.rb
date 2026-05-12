@@ -7,9 +7,9 @@ class TicketController < ApplicationController
     query = query.by_category(params[:category]) if params[:category].present?
 
     @pagy, @tickets = pagy(query, limit: 6)
-    @statuses = Ticket.distinct.pluck(:status)
-    @priorities = Ticket.distinct.pluck(:priority)
-    @categories = Ticket.distinct.pluck(:category)
+    @statuses = Ticket.status_options
+    @priorities = Ticket.priority_options
+    @categories = Ticket.category_options
   end
   def new
     @ticket = Ticket.new
