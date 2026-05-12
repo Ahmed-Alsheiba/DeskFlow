@@ -63,7 +63,7 @@
 
 <!-- Pagination links -->
 <div class="mt-4">
-  <%== @pagy.series_nav %>
+  <%== @pagy.series_nav(anchor_string: 'data-turbo-prefetch="false"') %>
 </div>
 
 <div class="mt-6">
