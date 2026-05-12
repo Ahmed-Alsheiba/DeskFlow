@@ -1,9 +1,40 @@
 <h1 class="text-2xl font-bold mb-6">Tickets</h1>
 
-<div class="mb-4">
-  <%== @pagy.series_nav %>
-</div>
+<% active_filters = params.slice(:search, :status, :priority, :category).values.any?(&:present?) %>
 
+<!-- The search and filter form -->
+<details class="mb-6 bg-white border border-slate-200 rounded-lg" <%= "open" if active_filters %>>
+  <summary class="cursor-pointer list-none select-none px-4 py-3 font-medium text-slate-800 border-b border-slate-200 flex items-center justify-between">
+    <span>Search & Filter</span>
+    <span class="text-xs text-slate-500"><%= active_filters ? "Active" : "Show" %></span>
+  </summary>
+
+  <form method="get" class="p-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+      <input type="text" name="search" placeholder="Search by title..." value="<%= params[:search] %>" class="px-3 py-2 border border-slate-300 rounded" />
+
+      <select name="status" class="px-3 py-2 border border-slate-300 rounded">
+        <option value="">Status</option>
+        <% @statuses&.each do |status| %>
+          <option value="<%= status %>" <%= "selected" if params[:status] == status %>><%= format_ticket_label(status) %></option>
+        <% end %>
+      </select>
+
+      <select name="priority" class="px-3 py-2 border border-slate-300 rounded">
+        <option value="">Priority</option>
+        <% @priorities&.each do |priority| %>
+          <option value="<%= priority %>" <%= "selected" if params[:priority] == priority %>><%= format_ticket_label(priority) %></option>
+        <% end %>
+      </select>
+
+      <div class="flex gap-2">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filter</button>
+        <a href="<%= root_path %>" class="px-4 py-2 border border-slate-300 rounded">Clear</a>
+      </div>
+    </div>
+  </form>
+</details>
+<!-- The tickets list -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
   <% @tickets.each do |ticket| %>
     <article class="bg-white border border-slate-200 border-l-4 <%= ticket_priority_accent_class(ticket.priority) %> rounded-lg p-4 shadow-sm">
@@ -28,6 +59,11 @@
       </div>
     </article>
   <% end %>
+</div>
+
+<!-- Pagination links -->
+<div class="mt-4">
+  <%== @pagy.series_nav %>
 </div>
 
 <div class="mt-6">

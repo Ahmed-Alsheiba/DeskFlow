@@ -1,6 +1,15 @@
 class TicketController < ApplicationController
   def home
-    @pagy, @tickets = pagy(Ticket.all, limit: 6)
+    query = Ticket.all
+    query = query.search(params[:search]) if params[:search].present?
+    query = query.by_status(params[:status]) if params[:status].present?
+    query = query.by_priority(params[:priority]) if params[:priority].present?
+    query = query.by_category(params[:category]) if params[:category].present?
+
+    @pagy, @tickets = pagy(query, limit: 6)
+    @statuses = Ticket.distinct.pluck(:status)
+    @priorities = Ticket.distinct.pluck(:priority)
+    @categories = Ticket.distinct.pluck(:category)
   end
   def new
     @ticket = Ticket.new
