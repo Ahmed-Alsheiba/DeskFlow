@@ -1,4 +1,6 @@
 class TicketController < ApplicationController
+  before_action :authenticate_user!
+
   def home
     query = Ticket.all
     query = query.search(params[:search]) if params[:search].present?

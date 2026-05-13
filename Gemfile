@@ -64,4 +64,8 @@ end
 
 gem "tailwindcss-rails", "~> 4.4"
 
-gem 'pagy', '~> 43.3'
+gem "pagy", "~> 43.3"
+
+# Authentication and password encryption
+gem "devise", "~> 4.9"
+gem "bcrypt", "~> 3.1.7"
