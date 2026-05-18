@@ -1,0 +1,331 @@
+<!-- app/views/pages/landing.html.erb 
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white">
+  <div class="max-w-3xl text-center p-8">
+    <h1 class="text-4xl font-extrabold mb-4">Mini Helpdesk</h1>
+    <p class="text-lg text-slate-600 mb-6">A lightweight ticketing demo to track issues and requests.</p>
+
+    <div class="flex items-center justify-center gap-3">
+      <%= link_to "View Tickets", tickets_path, class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+      <% if user_signed_in? %>
+        <%= link_to "Account", edit_user_registration_path, class: "px-4 py-2 rounded border border-slate-200 text-slate-700" %>
+      <% else %>
+        <%= link_to "Sign In", new_user_session_path, class: "px-4 py-2 rounded border border-slate-200 text-slate-700" %>
+        <%= link_to "Sign Up", new_user_registration_path, class: "px-4 py-2 rounded border border-slate-200 text-slate-700" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+-->
+
+<!-- app/views/pages/home.html.erb -->
+
+<div class="min-h-screen bg-slate-50 text-slate-900">
+
+  <!-- HERO SECTION -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800">
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute left-0 top-0 h-72 w-72 rounded-full bg-blue-500 blur-3xl"></div>
+      <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-cyan-500 blur-3xl"></div>
+    </div>
+
+    <div class="relative mx-auto grid max-w-7xl gap-16 px-6 py-24 lg:grid-cols-2 lg:items-center lg:py-32">
+      <!-- LEFT CONTENT -->
+      <div>
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-300">
+          Built for Hotel Operations Teams
+        </div>
+
+        <h1 class="max-w-2xl text-5xl font-bold leading-tight tracking-tight text-white lg:text-6xl">
+          Hotel IT Issues,
+          <span class="text-blue-400">Managed in One Place</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+          Mini-helpdesk helps hotels track and resolve PMS, POS, networking, software, and operational issues with a centralized ticketing system designed for hospitality teams.
+        </p>
+
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <button class="rounded-2xl bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-blue-500/30 transition hover:bg-blue-700">
+            Start Free Trial
+          </button>
+
+          <button class="rounded-2xl border border-slate-600 bg-white/5 px-8 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10">
+            See How It Works
+          </button>
+        </div>
+
+        <!-- STATS -->
+        <div class="mt-14 grid grid-cols-3 gap-6 border-t border-slate-700 pt-8">
+          <div>
+            <h3 class="text-3xl font-bold text-white">24/7</h3>
+            <p class="mt-2 text-sm text-slate-400">Issue Tracking</p>
+          </div>
+
+          <div>
+            <h3 class="text-3xl font-bold text-white">Fast</h3>
+            <p class="mt-2 text-sm text-slate-400">Department Routing</p>
+          </div>
+
+          <div>
+            <h3 class="text-3xl font-bold text-white">Smart</h3>
+            <p class="mt-2 text-sm text-slate-400">Operational Workflow</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DASHBOARD MOCKUP -->
+      <div class="relative">
+        <div class="rounded-3xl border border-slate-700 bg-slate-800/80 p-6 shadow-2xl backdrop-blur">
+          <div class="mb-6 flex items-center justify-between border-b border-slate-700 pb-4">
+            <div>
+              <h3 class="text-lg font-semibold text-white">Operations Dashboard</h3>
+              <p class="text-sm text-slate-400">Live Ticket Overview</p>
+            </div>
+
+            <div class="rounded-lg bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-400">
+              System Online
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <span class="rounded-lg bg-red-500/10 px-2 py-1 text-xs font-medium text-red-400">
+                      Critical
+                    </span>
+
+                    <p class="font-medium text-white">PMS Login Failure</p>
+                  </div>
+
+                  <p class="mt-2 text-sm text-slate-400">
+                    Front Office unable to access PMS system.
+                  </p>
+                </div>
+
+                <span class="text-sm text-slate-500">2m ago</span>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <span class="rounded-lg bg-amber-500/10 px-2 py-1 text-xs font-medium text-amber-400">
+                      Medium
+                    </span>
+
+                    <p class="font-medium text-white">POS Printer Offline</p>
+                  </div>
+
+                  <p class="mt-2 text-sm text-slate-400">
+                    Restaurant cashier printer disconnected.
+                  </p>
+                </div>
+
+                <span class="text-sm text-slate-500">12m ago</span>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-700 bg-slate-900 p-4">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <span class="rounded-lg bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-400">
+                      Open
+                    </span>
+
+                    <p class="font-medium text-white">Guest Wi‑Fi Issue</p>
+                  </div>
+
+                  <p class="mt-2 text-sm text-slate-400">
+                    Slow network connectivity on level 4.
+                  </p>
+                </div>
+
+                <span class="text-sm text-slate-500">24m ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-8 -left-8 hidden rounded-2xl border border-slate-700 bg-slate-800 p-5 shadow-2xl lg:block">
+          <p class="text-sm text-slate-400">Average Resolution Time</p>
+          <h4 class="mt-2 text-3xl font-bold text-white">1.8h</h4>
+          <p class="mt-2 text-sm font-medium text-emerald-400">↓ 34% Faster</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="py-24">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="max-w-3xl">
+        <div class="mb-4 inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
+          Core Features
+        </div>
+
+        <h2 class="text-4xl font-bold tracking-tight text-slate-900">
+          Everything your hotel needs to manage operational issues.
+        </h2>
+
+        <p class="mt-6 text-lg leading-8 text-slate-600">
+          Designed specifically for hospitality workflows, technical support, and operational communication.
+        </p>
+      </div>
+
+      <div class="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <% features = [
+          {
+            title: "Ticket Management",
+            desc: "Track, assign, and manage issues across departments in one centralized system."
+          },
+          {
+            title: "PMS & POS Support",
+            desc: "Handle hotel software incidents with organized workflows and priorities."
+          },
+          {
+            title: "Department Routing",
+            desc: "Automatically direct issues to the correct operational teams."
+          },
+          {
+            title: "Priority Handling",
+            desc: "Identify urgent operational problems before they affect guests."
+          },
+          {
+            title: "Activity Timeline",
+            desc: "View complete ticket history, updates, and communications."
+          },
+          {
+            title: "Analytics & Reporting",
+            desc: "Analyze recurring issues and monitor team performance metrics."
+          }
+        ] %>
+
+        <% features.each do |feature| %>
+          <div class="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-7 w-7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m6 2.25a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+
+            <h3 class="mt-6 text-xl font-semibold text-slate-900">
+              <%= feature[:title] %>
+            </h3>
+
+            <p class="mt-4 leading-7 text-slate-600">
+              <%= feature[:desc] %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section id="workflow" class="bg-white py-24">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="text-center">
+        <div class="mb-4 inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
+          Simple Workflow
+        </div>
+
+        <h2 class="text-4xl font-bold tracking-tight text-slate-900">
+          Resolve issues faster in 3 simple steps.
+        </h2>
+      </div>
+
+      <div class="mt-20 grid gap-8 lg:grid-cols-3">
+        <div class="relative rounded-3xl border border-slate-200 bg-slate-50 p-10">
+          <div class="absolute -top-5 left-10 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+            1
+          </div>
+
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">
+            Report an Issue
+          </h3>
+
+          <p class="mt-4 leading-7 text-slate-600">
+            Staff create tickets for PMS, POS, networking, maintenance, or operational problems.
+          </p>
+        </div>
+
+        <div class="relative rounded-3xl border border-slate-200 bg-slate-50 p-10">
+          <div class="absolute -top-5 left-10 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+            2
+          </div>
+
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">
+            Assign & Track
+          </h3>
+
+          <p class="mt-4 leading-7 text-slate-600">
+            Issues are routed to the correct departments with priorities and status tracking.
+          </p>
+        </div>
+
+        <div class="relative rounded-3xl border border-slate-200 bg-slate-50 p-10">
+          <div class="absolute -top-5 left-10 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 font-bold text-white">
+            3
+          </div>
+
+          <h3 class="mt-4 text-2xl font-semibold text-slate-900">
+            Resolve Efficiently
+          </h3>
+
+          <p class="mt-4 leading-7 text-slate-600">
+            Teams collaborate, resolve tickets, and maintain operational visibility.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="bg-slate-900 py-24">
+    <div class="mx-auto max-w-4xl px-6 text-center">
+      <div class="inline-flex rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-medium text-blue-300">
+        Built for Hospitality Teams
+      </div>
+
+      <h2 class="mt-8 text-5xl font-bold tracking-tight text-white">
+        Stop Managing Hotel Issues Through WhatsApp.
+      </h2>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+        Centralize support, improve response times, and keep your hotel operations running smoothly with Mini-helpdesk.
+      </p>
+
+      <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <button class="rounded-2xl bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-blue-500/30 transition hover:bg-blue-700">
+          Book a Demo
+        </button>
+
+        <button class="rounded-2xl border border-slate-600 bg-white/5 px-8 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10">
+          Contact Sales
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="border-t border-slate-200 bg-white py-10">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 md:flex-row">
+      <div>
+        <h3 class="text-lg font-semibold text-slate-900">Mini-helpdesk</h3>
+        <p class="mt-2 text-sm text-slate-500">
+          Modern ticketing system for hotel operations.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-6 text-sm text-slate-500">
+        <a href="#" class="transition hover:text-blue-600">Privacy</a>
+        <a href="#" class="transition hover:text-blue-600">Terms</a>
+        <a href="#" class="transition hover:text-blue-600">Support</a>
+      </div>
+    </div>
+  </footer>
+</div>

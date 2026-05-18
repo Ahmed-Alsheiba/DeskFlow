@@ -1,7 +1,7 @@
 class TicketController < ApplicationController
   before_action :authenticate_user!
-
-  def home
+  # Tickets list page (requires authentication)
+  def index
     query = Ticket.all
     query = query.search(params[:search]) if params[:search].present?
     query = query.by_status(params[:status]) if params[:status].present?
@@ -19,7 +19,7 @@ class TicketController < ApplicationController
   def create
     @ticket = Ticket.new(ticket_params)
     if @ticket.save
-      redirect_to root_path, notice: "Ticket was successfully created."
+      redirect_to tickets_path, notice: "Ticket was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
