@@ -64,11 +64,11 @@
 
         <div class="flex items-center gap-3">
           <% if user_signed_in? %>
-            <span class="hidden text-sm text-slate-600 lg:block"><strong><%= current_user.email %></strong> (<%= current_user.role.capitalize %>)</span>
-            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100" %>
+            <span class="hidden text-sm text-slate-600 lg:block"><strong><%= current_user.first_name %> <%= current_user.last_name %></strong> (<%= current_user.role.capitalize %>)</span>
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-400 hover:text-white" %>
           <% else %>
-            <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 md:block" %>
-            <%= link_to "Request Demo", new_user_registration_path, class: "rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-700" %>
+            <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-400 hover:text-white md:block" %>
+            <%= link_to "New? Sign Up", new_user_registration_path, class: "rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-700" %>
           <% end %>
         </div>
       </div>

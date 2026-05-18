@@ -14,6 +14,10 @@ class User < ApplicationRecord
 
   # Validations
   validates :role, presence: true, inclusion: { in: ROLES }
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :sector, presence: true
+  validates :job_title, presence: true
 
   # Scopes
   scope :admins, -> { where(role: "admin") }
