@@ -35,19 +35,21 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
-        <%= f.label :submitter_name, "Submitted By", class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :submitter_name, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <p class="block text-sm font-medium text-slate-700 mb-1">Submitted By</p>
+        <div class="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700">
+          <%= user_display_name(current_user) %>
+        </div>
       </div>
 
       <div>
-        <%= f.label :assigned_to, "Assign To", class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :assigned_to, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :assigned_to_id, "Assign To", class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.collection_select :assigned_to_id, @users, :id, :display_name, { prompt: "Unassigned" }, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
       </div>
     </div>
 
     <div class="flex items-center gap-3">
       <%= f.submit "Create Ticket", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
-      <%= link_to "Back to Tickets", root_path, class: "px-4 py-2 rounded border border-slate-300 text-slate-700" %>
+      <%= link_to "Back to Tickets", tickets_path, class: "px-4 py-2 rounded border border-slate-300 text-slate-700" %>
     </div>
   </section>
 <% end %>

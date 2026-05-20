@@ -64,7 +64,9 @@
 
         <div class="flex items-center gap-3">
           <% if user_signed_in? %>
-            <span class="hidden text-sm text-slate-600 lg:block"><strong><%= current_user.first_name %> <%= current_user.last_name %></strong> (<%= current_user.role.capitalize %>)</span>
+            <%= link_to edit_user_registration_path, class: "hidden text-sm text-slate-600 lg:block hover:underline" do %>
+              <strong><%= user_display_name(current_user) %></strong> (<%= current_user.role.capitalize %>)
+            <% end %>
             <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-400 hover:text-white" %>
           <% else %>
             <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-400 hover:text-white md:block" %>

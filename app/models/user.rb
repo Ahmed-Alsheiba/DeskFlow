@@ -36,4 +36,8 @@ class User < ApplicationRecord
   def staff?
     role == "staff"
   end
+
+  def display_name
+    [ first_name, last_name ].compact_blank.join(" ").presence || email
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_18_171619) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_19_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,8 +34,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_18_171619) do
     t.string "assigned_to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "submitter_id"
+    t.bigint "assigned_to_id"
+    t.index ["assigned_to_id"], name: "index_tickets_on_assigned_to_id"
     t.index ["priority"], name: "index_tickets_on_priority"
     t.index ["status"], name: "index_tickets_on_status"
+    t.index ["submitter_id"], name: "index_tickets_on_submitter_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,4 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_18_171619) do
   end
 
   add_foreign_key "comments", "tickets"
+  add_foreign_key "tickets", "users", column: "assigned_to_id"
+  add_foreign_key "tickets", "users", column: "submitter_id"
 end

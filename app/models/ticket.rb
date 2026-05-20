@@ -1,5 +1,7 @@
 class Ticket < ApplicationRecord
   has_many :comments, dependent: :destroy
+  belongs_to :submitter, class_name: "User", optional: true
+  belongs_to :assignee, class_name: "User", foreign_key: :assigned_to_id, optional: true
 
   STATUSES = [ "Open", "In Progress", "Closed" ].freeze
   PRIORITIES = [ "Low", "Medium", "High" ].freeze
