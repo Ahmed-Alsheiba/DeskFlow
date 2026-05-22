@@ -23,15 +23,10 @@
   </head>
 
   <body class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-slate-100" data-turbo-prefetch="false">
-    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-      <div class="absolute inset-0 opacity-20">
-        <div class="absolute left-0 top-0 h-72 w-72 rounded-full bg-blue-500 blur-3xl"></div>
-        <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-cyan-500 blur-3xl"></div>
-      </div>
-    </div>
+    
 
     <div class="relative z-10">
-    <header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-50">
+    <header class="border-b border-slate-900 bg-white/10 backdrop-blur sticky top-0 z-50">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <%= link_to root_path, class: "flex items-center gap-3" do %>
           <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white shadow-lg shadow-blue-500/20">
@@ -39,37 +34,37 @@
           </div>
 
           <div>
-            <h1 class="text-lg text-slate-900 font-semibold tracking-tight">Mini-helpdesk</h1>
-            <p class="text-xs text-slate-500">Hotel Operations Ticketing</p>
+            <h1 class="text-lg text-slate-100 font-semibold tracking-tight">Mini-helpdesk</h1>
+            <p class="text-xs text-slate-200">Hotel Operations Ticketing</p>
           </div>
         <% end %>
 
         <nav class="hidden items-center gap-8 md:flex">
-          <a href="#features" class="text-sm font-medium text-slate-600 transition hover:text-blue-600">
+          <a href="#features" class="text-sm font-medium text-slate-100 transition hover:text-blue-600">
             Features
           </a>
 
-          <a href="#workflow" class="text-sm font-medium text-slate-600 transition hover:text-blue-600">
+          <a href="#workflow" class="text-sm font-medium text-slate-100 transition hover:text-blue-600">
             Workflow
           </a>
 
-          <a href="#dashboard" class="text-sm font-medium text-slate-600 transition hover:text-blue-600">
+          <a href="#dashboard" class="text-sm font-medium text-slate-100 transition hover:text-blue-600">
             Dashboard
           </a>
 
-          <a href="#contact" class="text-sm font-medium text-slate-600 transition hover:text-blue-600">
+          <a href="#contact" class="text-sm font-medium text-slate-100 transition hover:text-blue-600">
             Contact
           </a>
         </nav>
 
         <div class="flex items-center gap-3">
           <% if user_signed_in? %>
-            <%= link_to edit_user_registration_path, class: "hidden text-sm text-slate-600 lg:block hover:underline" do %>
+            <%= link_to edit_user_registration_path, class: "hidden text-sm text-slate-200 lg:block hover:underline" do %>
               <strong><%= user_display_name(current_user) %></strong> (<%= current_user.role.capitalize %>)
             <% end %>
-            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-400 hover:text-white" %>
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-200 transition hover:bg-slate-200 hover:text-black" %>
           <% else %>
-            <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-400 hover:text-white md:block" %>
+            <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-200 hover:text-black md:block" %>
             <%= link_to "New? Sign Up", new_user_registration_path, class: "rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-700" %>
           <% end %>
         </div>

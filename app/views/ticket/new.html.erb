@@ -1,55 +1,128 @@
-<%= form_with model: @ticket do |f| %>
-  <section class="max-w-3xl mx-auto bg-white border border-slate-200 border-l-4 border-l-blue-400 rounded-lg p-6 shadow-sm">
-    <h1 class="text-2xl font-bold mb-6 text-slate-900">New Ticket</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <div>
-        <%= f.label :category, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.select :category, ["Hardware", "Software", "Network", "POS", "PMS", "Other"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-      </div>
+<div class="m-10">
+  <%= form_with model: @ticket do |f| %>
+    <section class="max-w-3xl mx-auto bg-slate-800 border border-slate-700 border-l-4 border-l-blue-500 rounded-lg p-8 shadow-xl overflow-visible">
+      <h1 class="text-3xl font-bold mb-8 text-slate-100">Create New Ticket</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Category</label>
+          <div data-controller="dropdown" class="relative">
+            <button
+              type="button"
+              data-dropdown-target="button"
+              data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+              class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
+            >
+              <span data-selected-label>Hardware</span>
+              <span class="w-0 h-0 border-l-4 border-r-4 border-t-6 border-l-transparent border-r-transparent border-t-slate-100"></span>
+            </button>
+            <div data-dropdown-target="menu" class="hidden absolute top-full left-0 right-0 mt-1 bg-slate-700 border border-slate-600 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto">
+              <% ["Hardware", "Software", "Network", "POS", "PMS", "Other"].each do |option| %>
+                <button type="button" data-value="<%= option %>" data-action="click->dropdown#selectOption" class="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white text-slate-100 transition">
+                  <%= option %>
+                </button>
+              <% end %>
+            </div>
+            <%= f.hidden_field :category, data: { dropdown_target: "hidden" }, value: "Hardware" %>
+          </div>
+        </div>
 
-      <div>
-        <%= f.label :priority, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.select :priority, ["Low", "Medium", "High"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-      </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Priority</label>
+          <div data-controller="dropdown" class="relative">
+            <button
+              type="button"
+              data-dropdown-target="button"
+              data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+              class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
+            >
+              <span data-selected-label>Medium</span>
+              <span class="w-0 h-0 border-l-4 border-r-4 border-t-6 border-l-transparent border-r-transparent border-t-slate-100"></span>
+            </button>
+            <div
+              data-dropdown-target="menu"
+              class="hidden absolute top-full left-0 right-0 mt-1 bg-slate-700 border border-slate-600 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto"
+            >
+              <% ["Low", "Medium", "High"].each do |option| %>
+                <button
+                  type="button"
+                  data-value="<%= option %>"
+                  data-action="click->dropdown#selectOption"
+                  class="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white text-slate-100 transition"
+                >
+                  <%= option %>
+                </button>
+              <% end %>
+            </div>
+            <%= f.hidden_field :priority, data: { dropdown_target: "hidden" }, value: "Medium" %>
+          </div>
+        </div>
 
-      <div>
-        <%= f.label :status, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.select :status, ["Open", "In Progress", "Closed"], class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-      </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Status</label>
+          <div data-controller="dropdown" class="relative">
+            <button
+              type="button"
+              data-dropdown-target="button"
+              data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+              class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
+            >
+              <span data-selected-label>Open</span>
+              <span class="w-0 h-0 border-l-4 border-r-4 border-t-6 border-l-transparent border-r-transparent border-t-slate-100"></span>
+            </button>
+            <div
+              data-dropdown-target="menu"
+              class="hidden absolute top-full left-0 right-0 mt-1 bg-slate-700 border border-slate-600 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto"
+            >
+              <% ["Open", "In Progress", "Closed"].each do |option| %>
+                <button
+                  type="button"
+                  data-value="<%= option %>"
+                  data-action="click->dropdown#selectOption"
+                  class="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white text-slate-100 transition"
+                >
+                  <%= option %>
+                </button>
+              <% end %>
+            </div>
+            <%= f.hidden_field :status, data: { dropdown_target: "hidden" }, value: "Open" %>
+          </div>
+        </div>
 
-      <div>
-        <%= f.label :location, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :location, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :title, class: "block text-sm font-medium text-slate-700 mb-1" %>
-      <%= f.text_field :title, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :description, class: "block text-sm font-medium text-slate-700 mb-1" %>
-      <%= f.text_area :description, rows: 4, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <div>
-        <p class="block text-sm font-medium text-slate-700 mb-1">Submitted By</p>
-        <div class="w-full rounded-md border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-700">
-          <%= user_display_name(current_user) %>
+        <div>
+          <%= f.label :location, class: "block text-sm font-semibold text-slate-300 mb-2" %>
+          <%= f.text_field :location, class: "w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:shadow-lg hover:shadow-blue-500/50" %>
         </div>
       </div>
 
-      <div>
-        <%= f.label :assigned_to_id, "Assign To", class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.collection_select :assigned_to_id, @users, :id, :display_name, { prompt: "Unassigned" }, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+      <div class="mb-6">
+        <%= f.label :title, class: "block text-sm font-semibold text-slate-300 mb-2" %>
+        <%= f.text_field :title, class: "w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:shadow-lg hover:shadow-blue-500/50", placeholder: "Brief title of the issue" %>
       </div>
-    </div>
 
-    <div class="flex items-center gap-3">
-      <%= f.submit "Create Ticket", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
-      <%= link_to "Back to Tickets", tickets_path, class: "px-4 py-2 rounded border border-slate-300 text-slate-700" %>
-    </div>
-  </section>
-<% end %>
+      <div class="mb-6">
+        <%= f.label :description, class: "block text-sm font-semibold text-slate-300 mb-2" %>
+        <%= f.text_area :description, rows: 5, class: "w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:shadow-lg hover:shadow-blue-500/50", placeholder: "Provide detailed information about the issue..." %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div>
+          <p class="block text-sm font-semibold text-slate-300 mb-2">Submitted By</p>
+          <div class="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2.5 text-sm text-slate-100">
+            <%= user_display_name(current_user) %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :assigned_to_id, "Assign To", class: "block text-sm font-semibold text-slate-300 mb-2" %>
+          <%= f.collection_select :assigned_to_id, @users, :id, :display_name, { prompt: "Unassigned" }, class: "w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 placeholder-slate-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 hover:shadow-lg hover:shadow-blue-500/50" %>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <%= f.submit "Create Ticket", class: "bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold shadow-lg shadow-blue-500/30 transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        <%= link_to "Back to Tickets", tickets_path, class: "px-6 py-2.5 rounded-lg border border-slate-600 text-slate-300 font-semibold transition hover:bg-slate-700 hover:border-slate-500" %>
+      </div>
+    </section>
+  <% end %>
+</div>
