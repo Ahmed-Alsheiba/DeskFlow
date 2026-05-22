@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_19_140000) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_22_172758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_19_140000) do
     t.string "author_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "author_id"
+    t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["ticket_id"], name: "index_comments_on_ticket_id"
   end
 
@@ -60,6 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_19_140000) do
   end
 
   add_foreign_key "comments", "tickets"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "tickets", "users", column: "assigned_to_id"
   add_foreign_key "tickets", "users", column: "submitter_id"
 end

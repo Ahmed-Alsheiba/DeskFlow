@@ -62,6 +62,13 @@
           <p><strong class="text-slate-300">Assigned To:</strong> <%= ticket[:assigned_to].presence || user_display_name(ticket.assignee) || "Unassigned" %></p>
           <p><strong class="text-slate-300">Location:</strong> <%= ticket.location.presence || "Not set" %></p>
         </div>
+
+        <div class="flex gap-2 mt-4">
+          <%= link_to "View", ticket_path(ticket), class: "flex-1 text-center px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-semibold transition hover:bg-blue-700" %>
+          <% if can_self_assign_ticket?(ticket) %>
+            <%= button_to "Claim", claim_ticket_path(ticket), method: :patch, class: "flex-1 px-3 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold transition hover:bg-emerald-700", form_class: "contents" %>
+          <% end %>
+        </div>
       </article>
     <% end %>
   </div>

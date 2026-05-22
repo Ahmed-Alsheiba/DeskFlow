@@ -8,46 +8,51 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-users_data = [
-  { first_name: "Alice", last_name: "Johnson", email: "alice.johnson@example.com", role: "manager", job_title: "Operations Manager", sector: "Operations" },
-  { first_name: "Bob", last_name: "Smith", email: "bob.smith@example.com", role: "staff", job_title: "POS Technician", sector: "Bar/Food Service" },
-  { first_name: "Carlos", last_name: "Rivera", email: "carlos.rivera@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
-  { first_name: "Dana", last_name: "Lee", email: "dana.lee@example.com", role: "staff", job_title: "Network Administrator", sector: "IT/Operations" },
-  { first_name: "Eva", last_name: "Brown", email: "eva.brown@example.com", role: "staff", job_title: "Front Desk Staff", sector: "Reception" },
-  { first_name: "Frank", last_name: "White", email: "frank.white@example.com", role: "staff", job_title: "Reception Manager", sector: "Reception" },
-  { first_name: "Grace", last_name: "Kim", email: "grace.kim@example.com", role: "staff", job_title: "System Administrator", sector: "IT/Operations" },
-  { first_name: "Hana", last_name: "Patel", email: "hana.patel@example.com", role: "staff", job_title: "Admin Office Staff", sector: "Administration" },
-  { first_name: "Ivan", last_name: "Cruz", email: "ivan.cruz@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
-  { first_name: "Julia", last_name: "Nguyen", email: "julia.nguyen@example.com", role: "staff", job_title: "Housekeeping Manager", sector: "Housekeeping" },
-  { first_name: "Kevin", last_name: "Marsh", email: "kevin.marsh@example.com", role: "staff", job_title: "Reception Staff", sector: "Reception" },
-  { first_name: "Lily", last_name: "Tan", email: "lily.tan@example.com", role: "staff", job_title: "Hardware Technician", sector: "IT/Operations" },
-  { first_name: "Mike", last_name: "Osei", email: "mike.osei@example.com", role: "staff", job_title: "IT Room Technician", sector: "IT/Operations" },
-  { first_name: "Nancy", last_name: "Ford", email: "nancy.ford@example.com", role: "manager", job_title: "IT Manager", sector: "IT/Operations" },
-  { first_name: "Olivia", last_name: "Chen", email: "olivia.chen@example.com", role: "staff", job_title: "Bar Manager", sector: "Bar/Food Service" },
-  { first_name: "Peter", last_name: "Davis", email: "peter.davis@example.com", role: "staff", job_title: "POS Technician", sector: "Bar/Food Service" },
-  { first_name: "Quinn", last_name: "Adams", email: "quinn.adams@example.com", role: "staff", job_title: "Guest Services", sector: "Operations" },
-  { first_name: "Rachel", last_name: "Green", email: "rachel.green@example.com", role: "staff", job_title: "Hardware Technician", sector: "IT/Operations" },
-  { first_name: "Sam", last_name: "Torres", email: "sam.torres@example.com", role: "staff", job_title: "Remote Support", sector: "IT/Operations" },
-  { first_name: "Tina", last_name: "Wallis", email: "tina.wallis@example.com", role: "staff", job_title: "Network Administrator", sector: "IT/Operations" },
-  { first_name: "Uma", last_name: "Singh", email: "uma.singh@example.com", role: "staff", job_title: "Housekeeping Manager", sector: "Housekeeping" },
-  { first_name: "Victor", last_name: "Bell", email: "victor.bell@example.com", role: "staff", job_title: "System Administrator", sector: "IT/Operations" },
-  { first_name: "Wendy", last_name: "Frost", email: "wendy.frost@example.com", role: "staff", job_title: "Admin Office Staff", sector: "Administration" },
-  { first_name: "Xavier", last_name: "Ho", email: "xavier.ho@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
-  { first_name: "Yara", last_name: "Malik", email: "yara.malik@example.com", role: "staff", job_title: "Checkout Staff", sector: "Bar/Food Service" },
-  { first_name: "Zoe", last_name: "Clarke", email: "zoe.clarke@example.com", role: "admin", job_title: "IT Director", sector: "IT/Operations" },
-]
+# users_data = [
+#   { first_name: "Alice", last_name: "Johnson", email: "alice.johnson@example.com", role: "manager", job_title: "Operations Manager", sector: "Operations" },
+#   { first_name: "Bob", last_name: "Smith", email: "bob.smith@example.com", role: "staff", job_title: "POS Technician", sector: "Bar/Food Service" },
+#   { first_name: "Carlos", last_name: "Rivera", email: "carlos.rivera@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
+#   { first_name: "Dana", last_name: "Lee", email: "dana.lee@example.com", role: "staff", job_title: "Network Administrator", sector: "IT/Operations" },
+#   { first_name: "Eva", last_name: "Brown", email: "eva.brown@example.com", role: "staff", job_title: "Front Desk Staff", sector: "Reception" },
+#   { first_name: "Frank", last_name: "White", email: "frank.white@example.com", role: "staff", job_title: "Reception Manager", sector: "Reception" },
+#   { first_name: "Grace", last_name: "Kim", email: "grace.kim@example.com", role: "staff", job_title: "System Administrator", sector: "IT/Operations" },
+#   { first_name: "Hana", last_name: "Patel", email: "hana.patel@example.com", role: "staff", job_title: "Admin Office Staff", sector: "Administration" },
+#   { first_name: "Ivan", last_name: "Cruz", email: "ivan.cruz@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
+#   { first_name: "Julia", last_name: "Nguyen", email: "julia.nguyen@example.com", role: "staff", job_title: "Housekeeping Manager", sector: "Housekeeping" },
+#   { first_name: "Kevin", last_name: "Marsh", email: "kevin.marsh@example.com", role: "staff", job_title: "Reception Staff", sector: "Reception" },
+#   { first_name: "Lily", last_name: "Tan", email: "lily.tan@example.com", role: "staff", job_title: "Hardware Technician", sector: "IT/Operations" },
+#   { first_name: "Mike", last_name: "Osei", email: "mike.osei@example.com", role: "staff", job_title: "IT Room Technician", sector: "IT/Operations" },
+#   { first_name: "Nancy", last_name: "Ford", email: "nancy.ford@example.com", role: "manager", job_title: "IT Manager", sector: "IT/Operations" },
+#   { first_name: "Olivia", last_name: "Chen", email: "olivia.chen@example.com", role: "staff", job_title: "Bar Manager", sector: "Bar/Food Service" },
+#   { first_name: "Peter", last_name: "Davis", email: "peter.davis@example.com", role: "staff", job_title: "POS Technician", sector: "Bar/Food Service" },
+#   { first_name: "Quinn", last_name: "Adams", email: "quinn.adams@example.com", role: "staff", job_title: "Guest Services", sector: "Operations" },
+#   { first_name: "Rachel", last_name: "Green", email: "rachel.green@example.com", role: "staff", job_title: "Hardware Technician", sector: "IT/Operations" },
+#   { first_name: "Sam", last_name: "Torres", email: "sam.torres@example.com", role: "staff", job_title: "Remote Support", sector: "IT/Operations" },
+#   { first_name: "Tina", last_name: "Wallis", email: "tina.wallis@example.com", role: "staff", job_title: "Network Administrator", sector: "IT/Operations" },
+#   { first_name: "Uma", last_name: "Singh", email: "uma.singh@example.com", role: "staff", job_title: "Housekeeping Manager", sector: "Housekeeping" },
+#   { first_name: "Victor", last_name: "Bell", email: "victor.bell@example.com", role: "staff", job_title: "System Administrator", sector: "IT/Operations" },
+#   { first_name: "Wendy", last_name: "Frost", email: "wendy.frost@example.com", role: "staff", job_title: "Admin Office Staff", sector: "Administration" },
+#   { first_name: "Xavier", last_name: "Ho", email: "xavier.ho@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
+#   { first_name: "Yara", last_name: "Malik", email: "yara.malik@example.com", role: "staff", job_title: "Checkout Staff", sector: "Bar/Food Service" },
+#   { first_name: "Zoe", last_name: "Clarke", email: "zoe.clarke@example.com", role: "admin", job_title: "IT Director", sector: "IT/Operations" },
+# ]
 
-users_data.each do |attrs|
-  User.find_or_create_by!(email: attrs[:email]) do |u|
-    u.first_name = attrs[:first_name]
-    u.last_name = attrs[:last_name]
-    u.role = attrs[:role]
-    u.password = "password"
-    u.password_confirmation = "password"
-    u.sector = attrs[:sector]
-    u.job_title = attrs[:job_title]
-  end
-end
+# users_data.each do |attrs|
+#   User.find_or_create_by!(email: attrs[:email]) do |u|
+#     u.first_name = attrs[:first_name]
+#     u.last_name = attrs[:last_name]
+#     u.role = attrs[:role]
+#     u.password = "password"
+#     u.password_confirmation = "password"
+#     u.sector = attrs[:sector]
+#     u.job_title = attrs[:job_title]
+#   end
+# end
+
+# def find_user_by_name!(full_name)
+#   first_name, last_name = full_name.split(" ", 2)
+#   User.find_by!(first_name: first_name, last_name: last_name)
+# end
 
 # tickets = [
 #   { title: "POS terminal not responding", description: "The POS terminal at front desk freezes after each transaction.", category: "POS", priority: "High", status: "Open", location: "Front Desk", submitter_name: "Alice Johnson", assigned_to: "Bob Smith" },
@@ -68,7 +73,14 @@ end
 # ]
 
 # tickets.each do |attrs|
-#   Ticket.find_or_create_by!(title: attrs[:title]) do |t|
-#     t.assign_attributes(attrs)
-#   end
+#   submitter = find_user_by_name!(attrs[:submitter_name])
+#   assignee = attrs[:assigned_to].present? ? find_user_by_name!(attrs[:assigned_to]) : nil
+
+#   ticket = Ticket.find_or_initialize_by(title: attrs[:title])
+#   ticket.assign_attributes(attrs.except(:submitter_name, :assigned_to))
+#   ticket.submitter = submitter
+#   ticket.submitter_name = submitter.display_name
+#   ticket.assignee = assignee
+#   ticket.assigned_to = assignee&.display_name
+#   ticket.save!
 # end

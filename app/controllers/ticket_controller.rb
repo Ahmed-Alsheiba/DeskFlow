@@ -1,5 +1,8 @@
 class TicketController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_ticket, only: [:show, :edit, :update, :claim]
+  before_action :check_edit_permission, only: [:edit, :update]
+
   # Tickets list page (requires authentication)
   def index
     query = Ticket.includes(:submitter, :assignee)
@@ -13,22 +16,61 @@ class TicketController < ApplicationController
     @priorities = Ticket.priority_options
     @categories = Ticket.category_options
   end
+
+  def show
+    @comment = Comment.new
+    @comments = @ticket.comments.includes(:author).order(created_at: :desc)
+  end
+
   def new
     @ticket = Ticket.new
     @users = User.order(:first_name, :last_name, :email)
   end
+
   def create
     @ticket = Ticket.new(ticket_params)
     @ticket.submitter = current_user
     if @ticket.save
-      redirect_to tickets_path, notice: "Ticket was successfully created."
+      redirect_to @ticket, notice: "Ticket was successfully created."
     else
       @users = User.order(:first_name, :last_name, :email)
       render :new, status: :unprocessable_entity
     end
   end
 
+  def edit
+    @users = User.order(:first_name, :last_name, :email)
+  end
+
+  def update
+    if @ticket.update(ticket_params)
+      redirect_to @ticket, notice: "Ticket was successfully updated."
+    else
+      @users = User.order(:first_name, :last_name, :email)
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def claim
+    if @ticket.assigned_to_id.present?
+      redirect_to @ticket, alert: "This ticket is already assigned."
+    else
+      @ticket.update(assigned_to_id: current_user.id)
+      redirect_to @ticket, notice: "You have claimed this ticket."
+    end
+  end
+
   private
+
+  def set_ticket
+    @ticket = Ticket.find(params[:id])
+  end
+
+  def check_edit_permission
+    return if can_edit_ticket?(@ticket)
+    redirect_to @ticket, alert: "You are not authorized to edit this ticket."
+  end
+
   def ticket_params
     params.require(:ticket).permit(:title, :description, :status, :category, :priority, :location, :assigned_to_id)
   end
