@@ -3,4 +3,8 @@ Rails.application.routes.draw do
   root "pages#landing"
   # Use plural resource name so form_with(model: @ticket) resolves to tickets_path
   resources :tickets, only: [ :index, :new, :create ], controller: "ticket"
+
+  namespace :admin do
+    get "dashboard", to: "dashboard#index"
+  end
 end
