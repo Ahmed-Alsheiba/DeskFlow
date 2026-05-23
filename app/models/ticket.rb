@@ -3,6 +3,8 @@ class Ticket < ApplicationRecord
   belongs_to :submitter, class_name: "User", optional: true
   belongs_to :assignee, class_name: "User", foreign_key: :assigned_to_id, optional: true
 
+  before_validation :set_in_progress_on_assignment
+
   STATUSES = [ "Open", "In Progress", "Closed" ].freeze
   PRIORITIES = [ "Low", "Medium", "High" ].freeze
   CATEGORIES = [ "Hardware", "Software", "Network", "POS", "PMS", "Other" ].freeze
@@ -16,4 +18,14 @@ class Ticket < ApplicationRecord
   def self.status_options = STATUSES
   def self.priority_options = PRIORITIES
   def self.category_options = CATEGORIES
+
+  private
+
+  def set_in_progress_on_assignment
+    return unless assigned_to_id.present?
+    return unless new_record? || will_save_change_to_assigned_to_id?
+    return unless status.blank? || status.to_s.strip.casecmp("open").zero?
+
+    self.status = "In Progress"
+  end
 end

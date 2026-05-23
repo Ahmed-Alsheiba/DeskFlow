@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :tickets, only: [ :index, :new, :create, :show, :edit, :update ], controller: "ticket" do
     member do
       patch :claim
+      patch :close
     end
     resources :comments, only: [:create], controller: "ticket_comments"
   end

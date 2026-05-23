@@ -69,3 +69,5 @@ gem "pagy", "~> 43.3"
 # Authentication and password encryption
 gem "devise", "~> 4.9"
 gem "bcrypt", "~> 3.1.7"
+
+gem "minitest", "~> 5.18", group: :test

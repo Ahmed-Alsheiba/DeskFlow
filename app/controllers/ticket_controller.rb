@@ -1,7 +1,7 @@
 class TicketController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_ticket, only: [:show, :edit, :update, :claim]
-  before_action :check_edit_permission, only: [:edit, :update]
+  before_action :set_ticket, only: [:show, :edit, :update, :claim, :close]
+  before_action :check_edit_permission, only: [:edit, :update, :close]
 
   # Tickets list page (requires authentication)
   def index
@@ -58,6 +58,31 @@ class TicketController < ApplicationController
       @ticket.update(assigned_to_id: current_user.id)
       redirect_to @ticket, notice: "You have claimed this ticket."
     end
+  end
+
+  def close
+    if @ticket.status.to_s.strip.casecmp("closed").zero?
+      redirect_to @ticket, alert: "This ticket is already closed."
+      return
+    end
+
+    content = params.dig(:comment, :content).to_s.strip
+    if content.blank?
+      redirect_to @ticket, alert: "Please add a closing comment."
+      return
+    end
+
+    Ticket.transaction do
+      @ticket.update!(status: "Closed")
+      @ticket.comments.create!(content: content, author: current_user)
+    end
+
+    redirect_to @ticket, notice: "Ticket was closed."
+  rescue ActiveRecord::RecordInvalid
+    @comment = Comment.new(content: content)
+    @comments = @ticket.comments.includes(:author).order(created_at: :desc)
+    flash.now[:alert] = "Unable to close this ticket."
+    render :show, status: :unprocessable_entity
   end
 
   private
