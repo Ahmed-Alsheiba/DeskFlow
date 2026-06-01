@@ -11,6 +11,5 @@ test:
   <<: *default
   database: mini_helpdesk_test
 production:
-  primary:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
+  <<: *default
+  database: <%= ENV["DATABASE_URL"] %>
