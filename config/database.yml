@@ -11,5 +11,14 @@ test:
   <<: *default
   database: mini_helpdesk_test
 production:
-  <<: *default
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+  queue:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+    database_tasks: false
+  cache:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+    database_tasks: false
