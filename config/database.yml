@@ -3,22 +3,24 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-
 development:
   <<: *default
   database: mini_helpdesk_development
 test:
   <<: *default
   database: mini_helpdesk_test
+
 production:
-  primary:
+  primary: &primary_production
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
-  queue:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
-    database_tasks: false
   cache:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
-    database_tasks: false
+    <<: *primary_production
+    url: <%= URI.parse(ENV['DATABASE_URL']).tap { |u| u.path += '_cache' } if ENV['DATABASE_URL'] && Rails.env.production? %>
+    database_tasks: true
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    url: <%= URI.parse(ENV['DATABASE_URL']).tap { |u| u.path += '_queue' } if ENV['DATABASE_URL'] && Rails.env.production? %>
+    database_tasks: true
+    migrations_paths: db/queue_migrate
