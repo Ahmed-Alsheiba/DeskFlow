@@ -51,14 +51,14 @@ accessories:
       secret:
         - CLOUDFLARE_TUNNEL_TOKEN
 
-  db:
+  postgres:
     image: postgres:17
     host: 192.168.8.223
     env:
-      secret:
-        - POSTGRES_PASSWORD
       clear:
         POSTGRES_USER: mini_helpdesk
         POSTGRES_DB: mini_helpdesk_production
-    volumes:
-      - mini_helpdesk_db:/var/lib/postgresql/data
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
