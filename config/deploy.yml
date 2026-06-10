@@ -20,10 +20,13 @@ registry:
 env:
   secret:
     - RAILS_MASTER_KEY
-    - DATABASE_URL
+    - POSTGRES_PASSWORD
   clear:
     SOLID_QUEUE_IN_PUMA: true
     RAILS_ASSUME_SSL: true
+    DB_HOST: 127.0.0.1
+    DB_PORT: 5432
+    POSTGRES_USER: helpdesk
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"
@@ -51,13 +54,14 @@ accessories:
       secret:
         - CLOUDFLARE_TUNNEL_TOKEN
 
-  postgres:
+  db:
     image: postgres:17
     host: 192.168.8.223
+    port: "127.0.0.1:5432:5432"
     env:
       clear:
-        POSTGRES_USER: mini_helpdesk
-        POSTGRES_DB: mini_helpdesk_production
+        POSTGRES_USER: helpdesk
+        POSTGRES_DB: helpdesk_production
       secret:
         - POSTGRES_PASSWORD
     directories:
