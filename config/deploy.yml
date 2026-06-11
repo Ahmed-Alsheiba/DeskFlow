@@ -24,7 +24,7 @@ env:
   clear:
     SOLID_QUEUE_IN_PUMA: true
     RAILS_ASSUME_SSL: true
-    DB_HOST: 127.0.0.1
+    DB_HOST: mini_helpdesk-db
     DB_PORT: 5432
     POSTGRES_USER: helpdesk
 
