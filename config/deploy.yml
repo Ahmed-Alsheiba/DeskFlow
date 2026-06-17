@@ -52,7 +52,7 @@ accessories:
     cmd: tunnel --no-autoupdate run
     env:
       secret:
-        - CLOUDFLARE_TUNNEL_TOKEN
+        - TUNNEL_TOKEN
 
   db:
     image: postgres:17
