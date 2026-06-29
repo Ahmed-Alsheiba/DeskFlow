@@ -42,6 +42,17 @@ def find_user_by_name!(full_name)
   User.find_by!(first_name: first_name, last_name: last_name)
 end
 
+# Returns a weekday-weighted datetime within the last ~90 days. Seeding records with varied
+# created_at keeps the dashboard "Tickets Reported" (by day of week) chart realistic instead
+# of every record landing on the single day the seed was run. Deterministic per +seed+.
+def realistic_created_at(seed)
+  rng = Random.new(seed)
+  date = Date.current - rng.rand(0..89)
+  # Reduce weekends: re-pick once (75% of the time) so Mon–Fri dominate without a single spike.
+  date = Date.current - rng.rand(0..89) if [ 0, 6 ].include?(date.wday) && rng.rand < 0.75
+  Time.zone.local(date.year, date.month, date.day, rng.rand(8..18), rng.rand(0..59), rng.rand(0..59))
+end
+
 Comment.delete_all
 Ticket.delete_all
 User.delete_all
@@ -115,7 +126,7 @@ tickets = [
   { title: "Spa appointment tablets out of sync", description: "The spa tablets show conflicting appointment availability after a recent update.", category: "Software", priority: "Medium", status: "Closed", location: "Spa Reception", submitter_name: "Alice Johnson", assigned_to: "Grace Kim" },
 ]
 
-tickets.each do |attrs|
+tickets.each_with_index do |attrs, i|
   submitter = find_user_by_name!(attrs[:submitter_name])
   assignee = attrs[:assigned_to].present? ? find_user_by_name!(attrs[:assigned_to]) : nil
 
@@ -125,6 +136,10 @@ tickets.each do |attrs|
   ticket.submitter_name = submitter.display_name
   ticket.assignee = assignee
   ticket.assigned_to = assignee&.display_name
+  # Explicit timestamps are honored by ActiveRecord (it only auto-fills blank ones).
+  created = realistic_created_at(20260629 + i)
+  ticket.created_at = created
+  ticket.updated_at = created
   ticket.save!
 end
 
@@ -143,11 +158,18 @@ comments = [
   { ticket_title: "Banquet team Wi-Fi access request", author_name: "Dana Lee", content: "Banquet credentials issued and tested on the event tablets." },
 ]
 
-comments.each do |attrs|
+comments.each_with_index do |attrs, i|
   ticket = find_ticket_by_title!(attrs[:ticket_title])
   author = find_user_by_name!(attrs[:author_name])
 
   comment = Comment.find_or_initialize_by(ticket: ticket, author: author, content: attrs[:content])
   comment.author_name = author.display_name
+  # Place the comment somewhere between its ticket's creation and now, so the activity
+  # timeline stays coherent (a comment never predates its ticket).
+  rng = Random.new(777 + i)
+  span = [ (Time.current - ticket.created_at).to_i, 0 ].max
+  created = ticket.created_at + (span.positive? ? rng.rand(0..span) : 0)
+  comment.created_at = created
+  comment.updated_at = created
   comment.save!
 end
