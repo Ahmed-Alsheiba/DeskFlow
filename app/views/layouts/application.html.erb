@@ -57,20 +57,38 @@
 
         <div class="flex items-center gap-3">
           <% if user_signed_in? %>
-            <% if current_user.admin? || current_user.manager? %>
+            <% if current_user.admin? || current_user.manager? || preview_mode? %>
               <%= link_to "Admin Dashboard", admin_dashboard_path, class: "hidden text-sm text-slate-200 lg:block hover:underline" %>
             <% end %>
-            <%= link_to edit_user_registration_path, class: "hidden text-sm text-slate-200 lg:block hover:underline" do %>
-              <strong><%= user_display_name(current_user) %></strong> (<%= current_user.role.capitalize %>)
+            <% if preview_mode? %>
+              <span class="hidden lg:inline-flex items-center rounded-lg bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-300 ring-1 ring-amber-400/30">Preview Mode</span>
+              <%= button_to "Exit Preview", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-200 transition hover:bg-slate-200 hover:text-black" %>
+            <% else %>
+              <%= link_to edit_user_registration_path, class: "hidden text-sm text-slate-200 lg:block hover:underline" do %>
+                <strong><%= user_display_name(current_user) %></strong> (<%= current_user.role.capitalize %>)
+              <% end %>
+              <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-200 transition hover:bg-slate-200 hover:text-black" %>
             <% end %>
-            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "rounded-xl border border-slate-300 px-5 py-2 text-sm font-bold text-slate-200 transition hover:bg-slate-200 hover:text-black" %>
           <% else %>
+            <%= button_to "▶ Live Demo", preview_path, class: "hidden rounded-xl border border-emerald-400/60 bg-emerald-500/10 px-5 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/20 md:block", form_class: "inline-block" %>
             <%= link_to "Login", new_user_session_path, class: "hidden rounded-xl border border-slate-300 px-5 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-200 hover:text-black md:block" %>
             <%= link_to "New? Sign Up", new_user_registration_path, class: "rounded-xl bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-700" %>
           <% end %>
         </div>
       </div>
     </header>
+
+    <% if preview_mode? %>
+      <div class="sticky top-[73px] z-40 border-b border-slate-600 bg-slate-700/95 text-slate-200 backdrop-blur">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-center gap-2 px-6 py-2.5 text-center text-sm sm:flex-row">
+          <span class="inline-flex items-center gap-2">
+            <span aria-hidden="true">🔒</span>
+            <span><strong class="font-semibold text-white">Preview mode</strong> — you're exploring a read-only demo. Changes are disabled.</span>
+          </span>
+          <%= button_to "Sign up to get full access", preview_path(to: "signup"), method: :delete, class: "rounded-lg bg-blue-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-blue-700", form_class: "inline-block" %>
+        </div>
+      </div>
+    <% end %>
 
     <div class="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-3xl px-4 pointer-events-none">
       <% if notice.present? %>

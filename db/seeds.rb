@@ -52,6 +52,22 @@ users_data.each do |attrs|
   user.save!
 end
 
+# Read-only preview/demo account used by the "Live Demo" entry point. It can browse the
+# app but never mutate anything (see ApplicationController#block_preview_writes). The
+# password is random/unused — visitors enter via POST /preview, not by logging in.
+preview_password = ENV.fetch("PREVIEW_PASSWORD") { SecureRandom.base58(32) }
+preview_user = User.find_or_initialize_by(email: "demo@preview.local")
+preview_user.assign_attributes(
+  first_name: "Demo",
+  last_name: "Visitor",
+  role: "preview",
+  job_title: "Guest",
+  sector: "General",
+  password: preview_password,
+  password_confirmation: preview_password
+)
+preview_user.save!
+
 def find_ticket_by_title!(title)
   Ticket.find_by!(title: title)
 end

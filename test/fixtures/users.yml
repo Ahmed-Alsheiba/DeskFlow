@@ -15,3 +15,12 @@ two:
   job_title: Manager
   first_name: Example
   last_name: User
+
+preview:
+  email: demo@preview.local
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: preview
+  sector: General
+  job_title: Guest
+  first_name: Demo
+  last_name: Visitor

@@ -24,13 +24,15 @@
         </p>
 
         <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-          <button class="rounded-2xl bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-blue-500/30 transition hover:bg-blue-700">
-            Start Free Trial
-          </button>
+          <% unless preview_mode? %>
+            <%= button_to "▶ Try Live Demo (no sign-up)", preview_path, class: "rounded-2xl bg-blue-600 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-blue-500/30 transition hover:bg-blue-700", form_class: "inline-block" %>
+          <% end %>
 
-          <button class="rounded-2xl border border-slate-600 bg-white/5 px-8 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10">
-            See How It Works
-          </button>
+          <% if preview_mode? %>
+            <%= button_to "New? Sign Up", preview_path(to: "signup"), method: :delete, class: "rounded-2xl border border-slate-600 bg-white/5 px-8 py-4 text-center text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10", form_class: "inline-block" %>
+          <% else %>
+            <%= link_to "New? Sign Up", new_user_registration_path, class: "rounded-2xl border border-slate-600 bg-white/5 px-8 py-4 text-center text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10" %>
+          <% end %>
         </div>
 
         <!-- STATS -->

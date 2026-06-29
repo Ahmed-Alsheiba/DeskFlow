@@ -58,8 +58,8 @@
 
         <div class="text-xs text-slate-400 space-y-1.5 border-t border-slate-700 pt-4">
           <p><strong class="text-slate-300">Category:</strong> <%= ticket.category.presence || "Not set" %></p>
-          <p><strong class="text-slate-300">Submitted By:</strong> <%= ticket.submitter_name.presence || user_display_name(ticket.submitter) || "Unassigned" %></p>
-          <p><strong class="text-slate-300">Assigned To:</strong> <%= ticket[:assigned_to].presence || user_display_name(ticket.assignee) || "Unassigned" %></p>
+          <p><strong class="text-slate-300">Submitted By:</strong> <%= display_person(ticket.submitter, ticket.submitter_name) %></p>
+          <p><strong class="text-slate-300">Assigned To:</strong> <%= display_person(ticket.assignee, ticket[:assigned_to]) %></p>
           <p><strong class="text-slate-300">Location:</strong> <%= ticket.location.presence || "Not set" %></p>
         </div>
 

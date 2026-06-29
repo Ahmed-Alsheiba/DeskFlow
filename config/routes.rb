@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   devise_for :users
   root "pages#landing"
+  # One-click read-only demo: signs in the locked-down "preview" account.
+  post "preview", to: "preview_sessions#create", as: :preview
+  # Leaves the demo (signs out) and forwards to the real sign-up / sign-in page.
+  delete "preview", to: "preview_sessions#destroy"
   # Use plural resource name so form_with(model: @ticket) resolves to tickets_path
   resources :tickets, only: [ :index, :new, :create, :show, :edit, :update ], controller: "ticket" do
     member do

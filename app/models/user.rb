@@ -5,7 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   # Roles
-  ROLES = [ "admin", "manager", "staff" ].freeze
+  # "preview" is a locked-down, read-only demo account (see PreviewSessionsController
+  # and ApplicationController#block_preview_writes). It can browse but never write.
+  ROLES = [ "admin", "manager", "staff", "preview" ].freeze
 
   # Associations
   has_many :submitted_tickets, class_name: "Ticket", foreign_key: "submitter_id", dependent: :nullify
@@ -35,6 +37,10 @@ class User < ApplicationRecord
 
   def staff?
     role == "staff"
+  end
+
+  def preview?
+    role == "preview"
   end
 
   def display_name

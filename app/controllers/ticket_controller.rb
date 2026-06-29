@@ -24,7 +24,7 @@ class TicketController < ApplicationController
 
   def new
     @ticket = Ticket.new
-    @users = User.order(:first_name, :last_name, :email)
+    @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
   end
 
   def create
@@ -33,20 +33,20 @@ class TicketController < ApplicationController
     if @ticket.save
       redirect_to @ticket, notice: "Ticket was successfully created."
     else
-      @users = User.order(:first_name, :last_name, :email)
+      @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @users = User.order(:first_name, :last_name, :email)
+    @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
   end
 
   def update
     if @ticket.update(ticket_params)
       redirect_to @ticket, notice: "Ticket was successfully updated."
     else
-      @users = User.order(:first_name, :last_name, :email)
+      @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -93,6 +93,7 @@ class TicketController < ApplicationController
 
   def check_edit_permission
     return if can_edit_ticket?(@ticket)
+    return if preview_mode? && request.get? # allow read-only viewing of the edit form
     redirect_to @ticket, alert: "You are not authorized to edit this ticket."
   end
 
