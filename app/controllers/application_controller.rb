@@ -3,7 +3,15 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   include Pagy::Method
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   private
+
+  def configure_permitted_parameters
+    keys = [ :first_name, :last_name, :job_title, :sector ]
+    devise_parameter_sanitizer.permit(:sign_up, keys: keys)
+    devise_parameter_sanitizer.permit(:account_update, keys: keys)
+  end
 
   def require_admin_or_manager!
     return if current_user&.admin? || current_user&.manager?
