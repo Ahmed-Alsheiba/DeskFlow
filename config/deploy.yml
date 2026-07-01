@@ -1,6 +1,6 @@
-service: mini_helpdesk
+service: deskflow
 
-image: ahmed-alsheiba/mini_helpdesk
+image: ahmed-alsheiba/deskflow
 
 servers:
   web:
@@ -24,7 +24,7 @@ env:
   clear:
     SOLID_QUEUE_IN_PUMA: true
     RAILS_ASSUME_SSL: true
-    DB_HOST: mini_helpdesk-db
+    DB_HOST: shared-postgres
     DB_PORT: 5432
     POSTGRES_USER: helpdesk
 
@@ -35,7 +35,7 @@ aliases:
   dbc: app exec --interactive --reuse "bin/rails dbconsole"
 
 volumes:
-  - "mini_helpdesk_storage:/rails/storage"
+  - "deskflow_storage:/rails/storage"
 
 asset_path: /rails/public/assets
 
@@ -54,15 +54,7 @@ accessories:
       secret:
         - TUNNEL_TOKEN
 
-  db:
-    image: postgres:17
-    host: 192.168.8.223
-    port: "127.0.0.1:5432:5432"
-    env:
-      clear:
-        POSTGRES_USER: helpdesk
-        POSTGRES_DB: helpdesk_production
-      secret:
-        - POSTGRES_PASSWORD
-    directories:
-      - data:/var/lib/postgresql/data
+  # Postgres is no longer an accessory of this app. The shared Postgres container
+  # (shared-postgres) is owned by the separate `shared-infra` Kamal project and is
+  # reached over the kamal network via DB_HOST: shared-postgres (see env above).
+  # The `helpdesk` role + deskflow_production DB live inside that shared cluster.

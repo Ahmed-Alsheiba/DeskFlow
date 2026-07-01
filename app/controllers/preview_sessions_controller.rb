@@ -8,7 +8,7 @@ class PreviewSessionsController < ApplicationController
 
     if user
       sign_in(user)
-      redirect_to tickets_path, notice: "You're exploring Mini-helpdesk in read-only preview mode."
+      redirect_to tickets_path, notice: "You're exploring DeskFlow in read-only preview mode."
     else
       redirect_to root_path, alert: "Preview is unavailable right now."
     end

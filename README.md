@@ -1,6 +1,6 @@
-# Mini Helpdesk
+# DeskFlow
 
-Mini Helpdesk is a Rails-based ticketing system for hotel and operations teams. It helps staff report issues, track tickets, and gives admins and managers a central place to review users and requests.
+DeskFlow is a Rails-based ticketing system for hotel and operations teams. It helps staff report issues, track tickets, and gives admins and managers a central place to review users and requests.
 
 ## Features
 
