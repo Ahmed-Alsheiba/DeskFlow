@@ -74,4 +74,4 @@ gem "pagy", "~> 43.3"
 gem "devise", "~> 4.9"
 gem "bcrypt", "~> 3.1.7"
 
-gem "minitest", "~> 5.18", group: :test
+gem "minitest", "~> 6.0", group: :test
