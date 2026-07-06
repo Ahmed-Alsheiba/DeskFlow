@@ -1,46 +1,46 @@
-<div class="flex items-center justify-center min-h-screen bg-slate-50">
-  <div class="max-w-md w-full bg-white border border-slate-200 border-l-4 border-l-blue-400 rounded-lg p-6 shadow-sm">
-    <h1 class="text-2xl font-bold mb-6 text-slate-900">Create Account</h1>
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800 text-slate-100">
+  <div class="max-w-md w-full bg-slate-800 border-slate-700 border border-l-4 text-slate-200 border-l-blue-400 rounded-lg p-6 shadow-sm">
+    <h1 class="text-2xl font-bold mb-6 text-slate-100">Create Account</h1>
 
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <div class="mb-4">
-        <%= f.label :email, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :email, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :first_name, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :first_name, autocomplete: "given-name", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :first_name, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.text_field :first_name, autocomplete: "given-name", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :last_name, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :last_name, autocomplete: "family-name", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :last_name, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.text_field :last_name, autocomplete: "family-name", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :job_title, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :job_title, autocomplete: "off", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :job_title, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.text_field :job_title, autocomplete: "off", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :sector, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.text_field :sector, autocomplete: "off", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :sector, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.text_field :sector, autocomplete: "off", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :password, class: "block text-sm font-medium text-slate-700 mb-1" %>
+        <%= f.label :password, class: "block text-sm font-medium text-slate-300 mb-1" %>
         <% if @minimum_password_length %>
           <p class="text-xs text-slate-500 mb-1">(<%= @minimum_password_length %> characters minimum)</p>
         <% end %>
-        <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <div class="mb-4">
-        <%= f.label :password_confirmation, class: "block text-sm font-medium text-slate-700 mb-1" %>
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900" %>
+        <%= f.label :password_confirmation, class: "block text-sm font-medium text-slate-300 mb-1" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-100" %>
       </div>
 
       <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded font-medium">Create Account</button>
