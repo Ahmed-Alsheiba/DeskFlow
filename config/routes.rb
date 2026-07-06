@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       patch :claim
       patch :close
     end
-    resources :comments, only: [:create], controller: "ticket_comments"
+    resources :comments, only: [ :create ], controller: "ticket_comments"
   end
 
   namespace :admin do

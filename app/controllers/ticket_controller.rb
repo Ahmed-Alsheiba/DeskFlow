@@ -1,7 +1,7 @@
 class TicketController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_ticket, only: [:show, :edit, :update, :claim, :close]
-  before_action :check_edit_permission, only: [:edit, :update, :close]
+  before_action :set_ticket, only: [ :show, :edit, :update, :claim, :close ]
+  before_action :check_edit_permission, only: [ :edit, :update, :close ]
 
   # Tickets list page (requires authentication)
   def index

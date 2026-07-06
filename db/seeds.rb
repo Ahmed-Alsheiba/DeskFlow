@@ -34,7 +34,7 @@ users_data = [
   { first_name: "Wendy", last_name: "Frost", email: "wendy.frost@example.com", role: "staff", job_title: "Admin Office Staff", sector: "Administration" },
   { first_name: "Xavier", last_name: "Ho", email: "xavier.ho@example.com", role: "staff", job_title: "IT Support", sector: "IT/Operations" },
   { first_name: "Yara", last_name: "Malik", email: "yara.malik@example.com", role: "staff", job_title: "Checkout Staff", sector: "Bar/Food Service" },
-  { first_name: "Zoe", last_name: "Clarke", email: "zoe.clarke@example.com", role: "admin", job_title: "IT Director", sector: "IT/Operations" },
+  { first_name: "Zoe", last_name: "Clarke", email: "zoe.clarke@example.com", role: "admin", job_title: "IT Director", sector: "IT/Operations" }
 ]
 
 def find_user_by_name!(full_name)
@@ -123,7 +123,7 @@ tickets = [
   { title: "Guest portal payment gateway timeout", description: "Guests reach a timeout error when paying deposits on the booking portal.", category: "Software", priority: "High", status: "In Progress", location: "Guest Portal", submitter_name: "Olivia Chen", assigned_to: "Xavier Ho" },
   { title: "Kitchen printer queue delayed", description: "Room service tickets are arriving late at the kitchen printer during breakfast rush.", category: "POS", priority: "Medium", status: "Open", location: "Kitchen", submitter_name: "Quinn Adams", assigned_to: "Peter Davis" },
   { title: "Security gate access log not exporting", description: "The staff entrance access log will not export for the weekly audit report.", category: "Software", priority: "Low", status: "In Progress", location: "Security Office", submitter_name: "Zoe Clarke", assigned_to: "Nancy Ford" },
-  { title: "Spa appointment tablets out of sync", description: "The spa tablets show conflicting appointment availability after a recent update.", category: "Software", priority: "Medium", status: "Closed", location: "Spa Reception", submitter_name: "Alice Johnson", assigned_to: "Grace Kim" },
+  { title: "Spa appointment tablets out of sync", description: "The spa tablets show conflicting appointment availability after a recent update.", category: "Software", priority: "Medium", status: "Closed", location: "Spa Reception", submitter_name: "Alice Johnson", assigned_to: "Grace Kim" }
 ]
 
 tickets.each_with_index do |attrs, i|
@@ -155,7 +155,7 @@ comments = [
   { ticket_title: "Housekeeping room-status app lagging", author_name: "Ivan Cruz", content: "Investigating app latency with the vendor; initial logs are uploaded." },
   { ticket_title: "Dining room receipt reprints missing tax line", author_name: "Peter Davis", content: "Receipt template corrected and reprints now show the full tax breakdown." },
   { ticket_title: "Night audit export failing", author_name: "Nancy Ford", content: "Export issue reproduced and a fix is queued for the next PMS restart." },
-  { ticket_title: "Banquet team Wi-Fi access request", author_name: "Dana Lee", content: "Banquet credentials issued and tested on the event tablets." },
+  { ticket_title: "Banquet team Wi-Fi access request", author_name: "Dana Lee", content: "Banquet credentials issued and tested on the event tablets." }
 ]
 
 comments.each_with_index do |attrs, i|
