@@ -33,7 +33,9 @@
             <tbody class="divide-y divide-slate-100">
               <% @terminated_users.each do |terminated_user| %>
                 <tr class="hover:bg-slate-50">
-                  <td class="px-4 py-3 font-medium text-slate-900"><%= user_display_name(terminated_user) %></td>
+                  <td class="px-4 py-3 font-medium">
+                    <%= link_to user_display_name(terminated_user), admin_terminated_user_path(terminated_user), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                  </td>
                   <td class="px-4 py-3 text-slate-600"><%= user_email_display(terminated_user) %></td>
                   <td class="px-4 py-3">
                     <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">

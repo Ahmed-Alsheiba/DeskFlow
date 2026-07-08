@@ -1,0 +1,193 @@
+<div class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="mx-auto max-w-5xl px-6 py-12">
+    <%= link_to "&larr; Back to Terminated Users".html_safe, admin_terminated_users_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+
+    <div class="mt-4 flex items-center gap-3">
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900"><%= user_display_name(@terminated_user) %></h1>
+      <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+        <%= @terminated_user.role.capitalize %>
+      </span>
+      <span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-semibold text-rose-700">Terminated</span>
+    </div>
+
+    <div class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <dl class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Email</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= user_email_display(@terminated_user) %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Job Title</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @terminated_user.job_title %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Sector</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @terminated_user.sector %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Terminated On</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @terminated_user.created_at.strftime("%b %d, %Y") %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="mt-6 rounded-2xl border border-rose-200 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-rose-700">Termination Report</h2>
+        <span class="text-sm text-slate-500">
+          by <%= preview_mode? ? "User ##{@terminated_user.terminated_by_id}" : @terminated_user.terminated_by_name %>
+        </span>
+      </div>
+      <p class="mt-3 whitespace-pre-line text-sm text-slate-800"><%= @terminated_user.reason %></p>
+    </div>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Submitted Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @terminated_user.submitted_tickets_count %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Claimed Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @terminated_user.assigned_tickets_count %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Solved Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @terminated_user.solved_tickets_count %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Comments</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @terminated_user.comments_count %></p>
+      </div>
+    </div>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Submitted Tickets</h2>
+        <span class="text-sm text-slate-500"><%= @submitted_tickets.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Priority</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Created</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @submitted_tickets.each do |ticket| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium">
+                    <%= link_to ticket.title, ticket_path(ticket), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.status %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.priority %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.category %></td>
+                  <td class="px-4 py-3 text-slate-500"><%= ticket.created_at.strftime("%b %d, %Y") %></td>
+                </tr>
+              <% end %>
+              <% if @submitted_tickets.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="5">No submitted tickets.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Claimed Tickets</h2>
+        <span class="text-sm text-slate-500"><%= @assigned_tickets.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Solved</th>
+                <th class="px-4 py-3">Priority</th>
+                <th class="px-4 py-3">Created</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @assigned_tickets.each do |ticket| %>
+                <% solved = ticket.status.to_s.strip.casecmp("closed").zero? %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium">
+                    <%= link_to ticket.title, ticket_path(ticket), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.status %></td>
+                  <td class="px-4 py-3">
+                    <% if solved %>
+                      <span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-700">Solved</span>
+                    <% else %>
+                      <span class="text-slate-400">&mdash;</span>
+                    <% end %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.priority %></td>
+                  <td class="px-4 py-3 text-slate-500"><%= ticket.created_at.strftime("%b %d, %Y") %></td>
+                </tr>
+              <% end %>
+              <% if @assigned_tickets.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="5">No claimed tickets.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Comments</h2>
+        <span class="text-sm text-slate-500"><%= @comments.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Comment</th>
+                <th class="px-4 py-3">Ticket</th>
+                <th class="px-4 py-3">Created</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @comments.each do |comment| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 text-slate-800 max-w-md" title="<%= comment.content %>"><%= truncate(comment.content, length: 100) %></td>
+                  <td class="px-4 py-3 font-medium">
+                    <% if comment.ticket %>
+                      <%= link_to comment.ticket.title, ticket_path(comment.ticket), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                    <% else %>
+                      <span class="text-slate-400">&mdash;</span>
+                    <% end %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-500"><%= comment.created_at.strftime("%b %d, %Y") %></td>
+                </tr>
+              <% end %>
+              <% if @comments.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="3">No comments.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

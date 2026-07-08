@@ -45,5 +45,30 @@ module Admin
       assert_no_match "Former Employee", response.body
       assert_no_match users(:admin).display_name, response.body
     end
+
+    # --- show (attribution) ------------------------------------------------------------
+    test "the detail page lists the archived user's linked tickets and report" do
+      archived = users(:one).terminate!(by: users(:admin), reason: "Detailed departure report.")
+      sign_in users(:admin)
+      get admin_terminated_user_path(archived)
+      assert_response :success
+      assert_match "Detailed departure report.", response.body
+      assert_match tickets(:one).title, response.body          # submitted
+      assert_match tickets(:assigned_closed).title, response.body # solved/claimed
+    end
+
+    test "the detail page masks PII in preview mode" do
+      archived = users(:one).terminate!(by: users(:admin), reason: "gone")
+      sign_in users(:preview)
+      get admin_terminated_user_path(archived)
+      assert_response :success
+      assert_no_match archived.email, response.body
+    end
+
+    test "an unknown detail page redirects to the index" do
+      sign_in users(:admin)
+      get admin_terminated_user_path(id: 10_000_000)
+      assert_redirected_to admin_terminated_users_path
+    end
   end
 end

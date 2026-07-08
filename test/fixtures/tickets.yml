@@ -40,3 +40,25 @@ assigned_closed:
   submitter: two
   assignee: one
   assigned_to: Test User
+
+# Closed and unassigned (e.g. its solver was terminated) — must NOT be claimable.
+closed_unassigned:
+  title: Archived POS glitch
+  description: Historical POS issue, already resolved.
+  category: POS
+  status: Closed
+  priority: Low
+  location: Bar
+  submitter: two
+
+# In progress, assigned to a suspended user — drives the suspended-assignee flag.
+assigned_to_suspended:
+  title: Housekeeping tablet sync
+  description: Tablet not syncing room status.
+  category: Software
+  status: In Progress
+  priority: High
+  location: Housekeeping
+  submitter: two
+  assignee: suspended
+  assigned_to: Susan Pended

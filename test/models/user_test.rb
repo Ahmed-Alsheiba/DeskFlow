@@ -96,6 +96,75 @@ class UserTest < ActiveSupport::TestCase
     # Submitted tickets and comments survive with nullified FKs.
     assert_nil submitted.reload.submitter_id
     assert_nil comment.reload.author_id
+
+    # Attribution back-links are stamped on every touched record (including the
+    # reverted open ticket, as history), and the links match the stored counts.
+    assert_equal archived.id, submitted.submitter_terminated_user_id
+    assert_equal archived.id, assigned_open.assignee_terminated_user_id
+    assert_equal archived.id, assigned_closed.assignee_terminated_user_id
+    assert_equal archived.id, comment.author_terminated_user_id
+    assert_equal archived.submitted_tickets_count, archived.submitted_tickets.count
+    assert_equal archived.assigned_tickets_count, archived.assigned_tickets.count
+    assert_equal archived.comments_count, archived.comments.count
+  end
+
+  # --- suspendable_by? ---------------------------------------------------------------
+  test "suspendable_by? mirrors the removal tiers" do
+    assert @staff.suspendable_by?(@admin)
+    assert @manager.suspendable_by?(@admin)
+    assert @staff.suspendable_by?(@manager)
+    assert_not @manager.suspendable_by?(@manager) # not managers/self
+    assert_not @admin.suspendable_by?(@manager)   # not admins
+    assert_not @staff.suspendable_by?(@staff)     # not self
+    assert_not @staff2.suspendable_by?(@staff)    # staff can't act
+    assert_not @preview.suspendable_by?(@admin)   # never the demo account
+    assert_not @staff.suspendable_by?(nil)
+  end
+
+  # --- suspend! / reinstate! ---------------------------------------------------------
+  test "suspend! blocks authentication and leaves assigned tickets untouched" do
+    assigned_open = tickets(:assigned_open) # In Progress, assignee: staff
+
+    @staff.suspend!(by: @admin, reason: "Under investigation")
+
+    assert @staff.suspended?
+    assert_not @staff.active_for_authentication?
+    assert_equal :suspended, @staff.inactive_message
+    assert_equal @admin.id, @staff.suspended_by_id
+    assert_equal "Under investigation", @staff.suspension_reason
+
+    # Tickets stay put — suspension is temporary.
+    assigned_open.reload
+    assert_equal "In Progress", assigned_open.status
+    assert_equal @staff.id, assigned_open.assigned_to_id
+  end
+
+  test "reinstate! clears suspension and restores authentication" do
+    @staff.suspend!(by: @admin, reason: "temp")
+    @staff.reinstate!(by: @manager)
+
+    assert_not @staff.suspended?
+    assert @staff.active_for_authentication?
+    assert_nil @staff.suspended_at
+    assert_nil @staff.suspended_by_id
+    assert_nil @staff.suspension_reason
+  end
+
+  test "suspend! and reinstate! raise for a non-permitted actor" do
+    assert_raises(ArgumentError) { @staff2.suspend!(by: @staff, reason: "nope") }
+    assert_not @staff2.reload.suspended?
+
+    @staff2.update!(suspended_at: Time.current)
+    assert_raises(ArgumentError) { @staff2.reinstate!(by: @staff) }
+    assert @staff2.reload.suspended?
+  end
+
+  test "assignable scope excludes preview and suspended users" do
+    @staff.update!(suspended_at: Time.current)
+    assignable = User.assignable
+    assert_includes assignable, @manager
+    assert_not_includes assignable, @staff
+    assert_not_includes assignable, @preview
   end
 
   test "terminate! raises for a non-permitted actor and changes nothing" do

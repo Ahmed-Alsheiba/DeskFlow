@@ -48,6 +48,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: "You are not authorized to access that page."
   end
 
+  # True role-based check (excludes preview), for surfacing manager-only UI such
+  # as the suspended-assignee flag on a ticket.
+  def admin_or_manager?
+    current_user&.admin? || current_user&.manager?
+  end
+
   def can_edit_ticket?(ticket)
     return false unless user_signed_in?
     return false if current_user.preview?
@@ -61,8 +67,10 @@ class ApplicationController < ActionController::Base
   def can_self_assign_ticket?(ticket)
     return false unless user_signed_in?
     return false if current_user.preview?
+    return false if ticket.status.to_s.strip.casecmp("closed").zero? # closed tickets are terminal
+
     ticket.assigned_to_id.nil?
   end
 
-  helper_method :can_edit_ticket?, :can_comment_ticket?, :can_self_assign_ticket?
+  helper_method :can_edit_ticket?, :can_comment_ticket?, :can_self_assign_ticket?, :admin_or_manager?
 end

@@ -114,6 +114,18 @@ class PreviewModeTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  test "preview user cannot suspend or reinstate a user" do
+    sign_in @preview
+    patch suspend_admin_user_path(@staff), params: { suspension: { reason: "nope" } }
+    assert_response :redirect
+    assert_not @staff.reload.suspended?
+
+    @staff.update!(suspended_at: Time.current)
+    patch reinstate_admin_user_path(@staff)
+    assert_response :redirect
+    assert @staff.reload.suspended?
+  end
+
   # --- PII masking -------------------------------------------------------------------
   test "admin dashboard hides real user emails in preview" do
     sign_in @preview

@@ -24,7 +24,7 @@ class TicketController < ApplicationController
 
   def new
     @ticket = Ticket.new
-    @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
+    @users = assignable_users
   end
 
   def create
@@ -33,26 +33,28 @@ class TicketController < ApplicationController
     if @ticket.save
       redirect_to @ticket, notice: "Ticket was successfully created."
     else
-      @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
+      @users = assignable_users
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
+    @users = assignable_users(@ticket.assigned_to_id)
   end
 
   def update
     if @ticket.update(ticket_params)
       redirect_to @ticket, notice: "Ticket was successfully updated."
     else
-      @users = User.where.not(role: "preview").order(:first_name, :last_name, :email)
+      @users = assignable_users(@ticket.assigned_to_id)
       render :edit, status: :unprocessable_entity
     end
   end
 
   def claim
-    if @ticket.assigned_to_id.present?
+    if @ticket.status.to_s.strip.casecmp("closed").zero?
+      redirect_to @ticket, alert: "This ticket is closed and can't be claimed."
+    elsif @ticket.assigned_to_id.present?
       redirect_to @ticket, alert: "This ticket is already assigned."
     else
       @ticket.update(assigned_to_id: current_user.id)
@@ -99,5 +101,14 @@ class TicketController < ApplicationController
 
   def ticket_params
     params.require(:ticket).permit(:title, :description, :status, :category, :priority, :location, :assigned_to_id)
+  end
+
+  # Users offered in the assignee dropdown. A ticket's current assignee is always
+  # included even if suspended, so editing an unrelated field never silently
+  # unassigns them; suspended users are otherwise excluded (see User.assignable).
+  def assignable_users(current_assignee_id = nil)
+    scope = User.assignable
+    scope = scope.or(User.where(id: current_assignee_id)) if current_assignee_id
+    scope.order(:first_name, :last_name, :email)
   end
 end

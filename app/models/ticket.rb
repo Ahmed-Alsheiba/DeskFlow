@@ -2,6 +2,9 @@ class Ticket < ApplicationRecord
   has_many :comments, dependent: :destroy
   belongs_to :submitter, class_name: "User", optional: true
   belongs_to :assignee, class_name: "User", foreign_key: :assigned_to_id, optional: true
+  # Archive back-links, stamped by User#terminate! when the submitter/assignee is removed.
+  belongs_to :submitter_terminated_user, class_name: "TerminatedUser", optional: true
+  belongs_to :assignee_terminated_user, class_name: "TerminatedUser", optional: true
 
   before_validation :set_in_progress_on_assignment
 

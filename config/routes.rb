@@ -17,7 +17,12 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "dashboard", to: "dashboard#index"
-    resources :users, only: [ :show, :destroy ]
-    resources :terminated_users, only: [ :index ]
+    resources :users, only: [ :show, :destroy ] do
+      member do
+        patch :suspend
+        patch :reinstate
+      end
+    end
+    resources :terminated_users, only: [ :index, :show ]
   end
 end

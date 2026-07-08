@@ -34,6 +34,18 @@ admin:
   first_name: Admin
   last_name: User
 
+suspended:
+  email: suspended@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: staff
+  sector: Housekeeping
+  job_title: Room Attendant
+  first_name: Susan
+  last_name: Pended
+  suspended_at: <%= 1.day.ago %>
+  suspended_by_id: 0
+  suspension_reason: Pre-suspended fixture for auth tests.
+
 preview:
   email: demo@preview.local
   encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>

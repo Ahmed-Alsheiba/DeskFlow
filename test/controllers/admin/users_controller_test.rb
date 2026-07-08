@@ -103,5 +103,45 @@ module Admin
       end
       assert_redirected_to root_path
     end
+
+    # --- suspend / reinstate -----------------------------------------------------------
+    test "admin can suspend a staff user with a reason" do
+      sign_in @admin
+      patch suspend_admin_user_path(@staff), params: { suspension: { reason: "Under review" } }
+      assert_redirected_to admin_user_path(@staff)
+      @staff.reload
+      assert @staff.suspended?
+      assert_equal @admin.id, @staff.suspended_by_id
+      assert_equal "Under review", @staff.suspension_reason
+    end
+
+    test "suspension requires a reason" do
+      sign_in @admin
+      patch suspend_admin_user_path(@staff), params: { suspension: { reason: "  " } }
+      assert_redirected_to admin_user_path(@staff)
+      assert_not @staff.reload.suspended?
+    end
+
+    test "manager cannot suspend an admin" do
+      sign_in @manager
+      patch suspend_admin_user_path(@admin), params: { suspension: { reason: "nope" } }
+      assert_redirected_to admin_user_path(@admin)
+      assert_not @admin.reload.suspended?
+    end
+
+    test "admin can reinstate a suspended user" do
+      @staff.update!(suspended_at: Time.current, suspended_by_id: @admin.id, suspension_reason: "x")
+      sign_in @admin
+      patch reinstate_admin_user_path(@staff)
+      assert_redirected_to admin_user_path(@staff)
+      assert_not @staff.reload.suspended?
+    end
+
+    test "staff cannot suspend anyone" do
+      sign_in @staff
+      patch suspend_admin_user_path(users(:three)), params: { suspension: { reason: "nope" } }
+      assert_redirected_to root_path
+      assert_not users(:three).reload.suspended?
+    end
   end
 end
