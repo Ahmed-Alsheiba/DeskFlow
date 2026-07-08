@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
   root "pages#landing"
   # One-click read-only demo: signs in the locked-down "preview" account.
   post "preview", to: "preview_sessions#create", as: :preview
@@ -17,5 +17,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "dashboard", to: "dashboard#index"
+    resources :users, only: [ :show, :destroy ]
+    resources :terminated_users, only: [ :index ]
   end
 end

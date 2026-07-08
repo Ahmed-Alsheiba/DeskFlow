@@ -1,0 +1,166 @@
+<div class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="mx-auto max-w-5xl px-6 py-12">
+    <%= link_to "&larr; Back to Dashboard".html_safe, admin_dashboard_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+
+    <div class="mt-4 flex items-center gap-3">
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900"><%= user_display_name(@user) %></h1>
+      <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+        <%= @user.role.capitalize %>
+      </span>
+    </div>
+
+    <div class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <dl class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Email</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= user_email_display(@user) %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Job Title</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @user.job_title %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Sector</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @user.sector %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-slate-500">Joined</dt>
+          <dd class="mt-1 text-sm text-slate-900"><%= @user.created_at.strftime("%b %d, %Y") %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Claimed Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @claimed_tickets.length %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Solved Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @solved_count %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Submitted Tickets</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @submitted_tickets.length %></p>
+      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <p class="text-sm font-medium text-slate-500">Comments</p>
+        <p class="mt-2 text-3xl font-bold text-slate-900"><%= @comments_count %></p>
+      </div>
+    </div>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Claimed Tickets</h2>
+        <span class="text-sm text-slate-500"><%= @claimed_tickets.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Priority</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Created</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @claimed_tickets.each do |ticket| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium">
+                    <%= link_to ticket.title, ticket_path(ticket), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.status %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.priority %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.category %></td>
+                  <td class="px-4 py-3 text-slate-500"><%= ticket.created_at.strftime("%b %d, %Y") %></td>
+                </tr>
+              <% end %>
+              <% if @claimed_tickets.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="5">No claimed tickets.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Submitted Tickets</h2>
+        <span class="text-sm text-slate-500"><%= @submitted_tickets.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Title</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Priority</th>
+                <th class="px-4 py-3">Category</th>
+                <th class="px-4 py-3">Created</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @submitted_tickets.each do |ticket| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium">
+                    <%= link_to ticket.title, ticket_path(ticket), class: "text-slate-900 hover:text-blue-600 hover:underline" %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.status %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.priority %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= ticket.category %></td>
+                  <td class="px-4 py-3 text-slate-500"><%= ticket.created_at.strftime("%b %d, %Y") %></td>
+                </tr>
+              <% end %>
+              <% if @submitted_tickets.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="5">No submitted tickets.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <% if @user.removable_by?(current_user) %>
+      <section class="mt-12">
+        <div class="rounded-2xl border border-rose-200 bg-white p-6 shadow-sm">
+          <h2 class="text-lg font-semibold text-rose-700">Remove User</h2>
+          <p class="mt-1 text-sm text-slate-500">
+            Removing a user archives their record to Terminated Users, returns their open tickets to the pool, and permanently deletes the account.
+          </p>
+          <button type="button" class="mt-4 bg-rose-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500" onclick="document.getElementById('remove-user-dialog-<%= @user.id %>').showModal()">
+            Remove User
+          </button>
+        </div>
+      </section>
+
+      <dialog id="remove-user-dialog-<%= @user.id %>" class="fixed inset-0 m-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 backdrop:bg-slate-900/40">
+        <div class="p-6 border-b border-slate-200">
+          <h3 class="text-lg font-semibold">Remove <%= user_display_name(@user) %></h3>
+          <p class="mt-1 text-sm text-slate-500">This archives the user's record, reverts their open tickets to the pool, and permanently deletes the account. A termination report is required.</p>
+        </div>
+        <div class="p-6">
+          <%= form_with url: admin_user_path(@user), method: :delete do |f| %>
+            <%= text_area_tag "termination[reason]", nil, placeholder: "Termination report / reason for removal...", rows: 4, required: true, minlength: 1, class: "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20" %>
+            <div class="mt-4 flex gap-2">
+              <%= f.submit "Remove User", class: "bg-rose-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500" %>
+              <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 text-sm font-semibold transition hover:bg-slate-100" onclick="document.getElementById('remove-user-dialog-<%= @user.id %>').close()">
+                Cancel
+              </button>
+            </div>
+          <% end %>
+        </div>
+      </dialog>
+    <% end %>
+  </div>
+</div>

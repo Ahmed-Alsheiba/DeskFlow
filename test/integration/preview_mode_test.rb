@@ -106,6 +106,14 @@ class PreviewModeTest < ActionDispatch::IntegrationTest
     assert_not_equal "Hacked", @preview.reload.first_name
   end
 
+  test "preview user cannot terminate a user" do
+    sign_in @preview
+    assert_no_difference -> { User.count }, -> { TerminatedUser.count } do
+      delete admin_user_path(@staff), params: { termination: { reason: "nope" } }
+    end
+    assert_response :redirect
+  end
+
   # --- PII masking -------------------------------------------------------------------
   test "admin dashboard hides real user emails in preview" do
     sign_in @preview
@@ -113,5 +121,28 @@ class PreviewModeTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_no_match @staff.email, response.body
     assert_match "hidden@preview.local", response.body
+  end
+
+  test "admin user detail page hides real PII in preview" do
+    sign_in @preview
+    get admin_user_path(@staff)
+    assert_response :success
+    assert_no_match @staff.email, response.body
+    assert_no_match @staff.display_name, response.body
+    assert_no_match "remove-user-dialog", response.body
+  end
+
+  test "terminated users page hides real PII in preview" do
+    sign_in @preview
+    TerminatedUser.create!(
+      original_user_id: 999, email: "former@example.com",
+      first_name: "Former", last_name: "Employee", role: "staff",
+      reason: "Resigned.", terminated_by_name: "Zoe Clarke"
+    )
+    get admin_terminated_users_path
+    assert_response :success
+    assert_no_match "former@example.com", response.body
+    assert_no_match "Former Employee", response.body
+    assert_no_match "Zoe Clarke", response.body
   end
 end

@@ -1,0 +1,67 @@
+<div class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="mx-auto max-w-7xl px-6 py-12">
+    <%= link_to "&larr; Back to Dashboard".html_safe, admin_dashboard_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+
+    <div class="mt-4 flex flex-col gap-2">
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900">Terminated Users</h1>
+      <p class="text-slate-600">Archived records of removed accounts, including their activity counts and termination reports.</p>
+    </div>
+
+    <section class="mt-12">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold text-slate-900">Archive</h2>
+        <span class="text-sm text-slate-500"><%= @terminated_users.length %> records</span>
+      </div>
+
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Name</th>
+                <th class="px-4 py-3">Email</th>
+                <th class="px-4 py-3">Role</th>
+                <th class="px-4 py-3">Submitted</th>
+                <th class="px-4 py-3">Claimed</th>
+                <th class="px-4 py-3">Solved</th>
+                <th class="px-4 py-3">Comments</th>
+                <th class="px-4 py-3">Terminated By</th>
+                <th class="px-4 py-3">Terminated On</th>
+                <th class="px-4 py-3">Reason</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <% @terminated_users.each do |terminated_user| %>
+                <tr class="hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium text-slate-900"><%= user_display_name(terminated_user) %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= user_email_display(terminated_user) %></td>
+                  <td class="px-4 py-3">
+                    <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+                      <%= terminated_user.role.capitalize %>
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 text-slate-600"><%= terminated_user.submitted_tickets_count %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= terminated_user.assigned_tickets_count %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= terminated_user.solved_tickets_count %></td>
+                  <td class="px-4 py-3 text-slate-600"><%= terminated_user.comments_count %></td>
+                  <td class="px-4 py-3 text-slate-600">
+                    <%= preview_mode? ? "User ##{terminated_user.terminated_by_id}" : terminated_user.terminated_by_name %>
+                  </td>
+                  <td class="px-4 py-3 text-slate-500"><%= terminated_user.created_at.strftime("%b %d, %Y") %></td>
+                  <td class="px-4 py-3 text-slate-600 max-w-xs" title="<%= terminated_user.reason %>">
+                    <%= truncate(terminated_user.reason, length: 80) %>
+                  </td>
+                </tr>
+              <% end %>
+              <% if @terminated_users.empty? %>
+                <tr>
+                  <td class="px-4 py-6 text-center text-slate-500" colspan="10">No terminated users.</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

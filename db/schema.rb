@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_22_172758) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_07_104024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,26 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_172758) do
     t.bigint "author_id"
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["ticket_id"], name: "index_comments_on_ticket_id"
+  end
+
+  create_table "terminated_users", force: :cascade do |t|
+    t.bigint "original_user_id", null: false
+    t.string "email", null: false
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
+    t.string "role", null: false
+    t.string "job_title", default: "", null: false
+    t.string "sector", default: "", null: false
+    t.integer "submitted_tickets_count", default: 0, null: false
+    t.integer "assigned_tickets_count", default: 0, null: false
+    t.integer "solved_tickets_count", default: 0, null: false
+    t.integer "comments_count", default: 0, null: false
+    t.text "reason", null: false
+    t.string "terminated_by_name", null: false
+    t.bigint "terminated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["original_user_id"], name: "index_terminated_users_on_original_user_id"
   end
 
   create_table "tickets", force: :cascade do |t|

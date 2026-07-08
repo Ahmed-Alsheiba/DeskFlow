@@ -16,6 +16,24 @@ two:
   first_name: Example
   last_name: User
 
+three:
+  email: three@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: staff
+  sector: Reception
+  job_title: Front Desk Staff
+  first_name: Third
+  last_name: User
+
+admin:
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  role: admin
+  sector: IT/Operations
+  job_title: IT Director
+  first_name: Admin
+  last_name: User
+
 preview:
   email: demo@preview.local
   encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>

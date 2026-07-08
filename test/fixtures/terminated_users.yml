@@ -1,0 +1,2 @@
+# Terminated-user archive rows are created by User#terminate! in tests;
+# no baseline fixtures are needed.

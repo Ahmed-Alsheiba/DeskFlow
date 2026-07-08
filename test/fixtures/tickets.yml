@@ -16,3 +16,27 @@ two:
   location: Lobby
   submitter: two
   assigned_to: one
+
+# NOTE: "assignee:" (the association) sets assigned_to_id; "assigned_to:" is the
+# denormalized name snapshot string column.
+assigned_open:
+  title: Projector flickering
+  description: Meeting room projector flickers during presentations.
+  category: Hardware
+  status: In Progress
+  priority: Low
+  location: Meeting Room
+  submitter: two
+  assignee: one
+  assigned_to: Test User
+
+assigned_closed:
+  title: Password reset
+  description: Reset the front desk terminal password.
+  category: Software
+  status: Closed
+  priority: Low
+  location: Reception
+  submitter: two
+  assignee: one
+  assigned_to: Test User
