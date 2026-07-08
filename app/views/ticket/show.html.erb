@@ -1,4 +1,4 @@
-<div class="m-10">
+<div class="px-4 py-6 sm:px-6 sm:py-10">
   <div class="max-w-4xl mx-auto">
     <!-- Back link -->
     <div class="mb-6">
@@ -6,13 +6,13 @@
     </div>
 
     <!-- Ticket header -->
-    <div class="flex items-start justify-between gap-4 mb-8">
-      <div>
-        <h1 class="text-3xl font-bold text-slate-100 mb-2"><%= @ticket.title %></h1>
+    <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+      <div class="min-w-0">
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-2 break-words"><%= @ticket.title %></h1>
         <p class="text-slate-400">Created <%= @ticket.created_at.strftime("%b %d, %Y at %I:%M %p") %></p>
       </div>
 
-      <div class="flex gap-2 shrink-0">
+      <div class="flex flex-wrap gap-2 shrink-0">
         <span class="inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ring-inset <%= ticket_priority_badge_class(@ticket.priority) %>">
           <%= format_ticket_label(@ticket.priority) %>
         </span>
@@ -23,26 +23,26 @@
     </div>
 
     <!-- Main content -->
-    <div class="grid grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-3">
       <!-- Ticket details -->
-      <div class="col-span-2">
+      <div class="min-w-0 lg:col-span-2">
         <section class="bg-slate-800 border border-slate-700 rounded-lg p-6 mb-6">
           <h2 class="text-lg font-semibold text-slate-100 mb-4">Details</h2>
 
           <div class="space-y-4 text-sm">
             <div>
               <p class="text-slate-400 font-medium">Description</p>
-              <p class="text-slate-200 mt-2"><%= @ticket.description.presence || "No description provided." %></p>
+              <p class="text-slate-200 mt-2 break-words"><%= @ticket.description.presence || "No description provided." %></p>
             </div>
 
             <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700">
               <div>
                 <p class="text-slate-400 font-medium">Category</p>
-                <p class="text-slate-200 mt-1"><%= @ticket.category.presence || "Not set" %></p>
+                <p class="text-slate-200 mt-1 break-words"><%= @ticket.category.presence || "Not set" %></p>
               </div>
               <div>
                 <p class="text-slate-400 font-medium">Location</p>
-                <p class="text-slate-200 mt-1"><%= @ticket.location.presence || "Not set" %></p>
+                <p class="text-slate-200 mt-1 break-words"><%= @ticket.location.presence || "Not set" %></p>
               </div>
             </div>
           </div>
@@ -62,13 +62,13 @@
             <div class="space-y-4 mb-6">
               <% @comments.each do |comment| %>
                 <div class="bg-slate-700/50 rounded-lg p-4 border border-slate-600">
-                  <div class="flex items-start justify-between mb-2">
-                    <p class="font-semibold text-slate-200">
+                  <div class="flex items-start justify-between gap-3 mb-2">
+                    <p class="min-w-0 wrap-anywhere font-semibold text-slate-200">
                       <%= display_person(comment.author, comment.author_name, fallback: "Unknown User") %>
                     </p>
-                    <span class="text-xs text-slate-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
+                    <span class="shrink-0 whitespace-nowrap text-xs text-slate-500"><%= time_ago_in_words(comment.created_at) %> ago</span>
                   </div>
-                  <p class="text-slate-300 text-sm"><%= comment.content %></p>
+                  <p class="text-slate-300 text-sm break-words"><%= comment.content %></p>
                 </div>
               <% end %>
             </div>
@@ -104,30 +104,30 @@
       </div>
 
       <!-- Sidebar -->
-      <div>
-        <section class="bg-slate-800 border border-slate-700 rounded-lg p-6 sticky top-24">
+      <div class="order-first min-w-0 lg:order-none">
+        <section class="bg-slate-800 border border-slate-700 rounded-lg p-6 lg:sticky lg:top-24">
           <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wide mb-4">Assignment</h3>
 
           <div class="space-y-4 text-sm">
             <div>
               <p class="text-slate-400 font-medium">Submitted By</p>
-              <p class="text-slate-200 mt-2"><%= display_person(@ticket.submitter, @ticket.submitter_name, fallback: "Unknown") %></p>
+              <p class="text-slate-200 mt-2 wrap-anywhere"><%= display_person(@ticket.submitter, @ticket.submitter_name, fallback: "Unknown") %></p>
             </div>
 
             <div class="pt-4 border-t border-slate-700">
               <p class="text-slate-400 font-medium mb-2">Assigned To</p>
               <% if @ticket.assignee || @ticket[:assigned_to].present? %>
                 <div class="flex items-center justify-between gap-2">
-                  <p class="text-slate-200">
+                  <p class="min-w-0 wrap-anywhere text-slate-200">
                     <%= display_person(@ticket.assignee, @ticket[:assigned_to]) %>
                     <% if @ticket.assignee.nil? %>
                       <span class="text-xs text-slate-500">(former member)</span>
                     <% end %>
                   </p>
                   <% if current_user == @ticket.assignee %>
-                    <span class="text-xs bg-blue-600/20 text-blue-300 px-2 py-1 rounded">You</span>
+                    <span class="shrink-0 text-xs bg-blue-600/20 text-blue-300 px-2 py-1 rounded">You</span>
                   <% elsif admin_or_manager? && @ticket.assignee&.suspended? %>
-                    <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">Suspended</span>
+                    <span class="shrink-0 text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">Suspended</span>
                   <% end %>
                 </div>
                 <% if admin_or_manager? && @ticket.assignee&.suspended? %>
@@ -169,7 +169,7 @@
 </div>
 
 <% if can_edit_ticket?(@ticket) && !@ticket.status.to_s.strip.casecmp("closed").zero? %>
-  <dialog id="close-ticket-dialog-<%= @ticket.id %>" class="fixed inset-0 m-auto rounded-xl border border-slate-700 bg-slate-800 text-slate-100 w-full max-w-lg p-0 backdrop:bg-slate-900/70">
+  <dialog id="close-ticket-dialog-<%= @ticket.id %>" class="fixed inset-0 m-auto rounded-xl border border-slate-700 bg-slate-800 text-slate-100 w-[calc(100%-2rem)] max-w-lg p-0 backdrop:bg-slate-900/70">
     <div class="p-6 border-b border-slate-700">
       <h3 class="text-lg font-semibold">Close ticket</h3>
       <p class="text-sm text-slate-400 mt-1">Add a closing report to record how this ticket was resolved.</p>

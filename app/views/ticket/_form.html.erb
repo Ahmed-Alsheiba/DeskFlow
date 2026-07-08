@@ -1,7 +1,7 @@
 <!-- Shared ticket form partial for new and edit -->
 <%= form_with model: @ticket do |f| %>
-  <section class="max-w-3xl mx-auto bg-slate-800 border border-slate-700 border-l-4 border-l-blue-500 rounded-lg p-8 shadow-xl overflow-visible">
-    <h1 class="text-3xl font-bold mb-8 text-slate-100"><%= @ticket.new_record? ? "Create New Ticket" : "Edit Ticket" %></h1>
+  <section class="max-w-3xl mx-auto bg-slate-800 border border-slate-700 border-l-4 border-l-blue-500 rounded-lg p-5 sm:p-8 shadow-xl overflow-visible">
+    <h1 class="text-2xl sm:text-3xl font-bold mb-8 text-slate-100"><%= @ticket.new_record? ? "Create New Ticket" : "Edit Ticket" %></h1>
     
     <!-- Error messages -->
     <% if @ticket.errors.any? %>
@@ -22,7 +22,7 @@
           <button
             type="button"
             data-dropdown-target="button"
-            data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+            data-action="click->dropdown#toggle"
             class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
           >
             <span data-selected-label><%= @ticket.category.presence || "Hardware" %></span>
@@ -45,7 +45,7 @@
           <button
             type="button"
             data-dropdown-target="button"
-            data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+            data-action="click->dropdown#toggle"
             class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
           >
             <span data-selected-label><%= @ticket.priority.presence || "Medium" %></span>
@@ -76,7 +76,7 @@
           <button
             type="button"
             data-dropdown-target="button"
-            data-action="click->dropdown#toggle keydown->dropdown#handleKeydown"
+            data-action="click->dropdown#toggle"
             class="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-2.5 text-sm text-slate-100 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 flex items-center justify-between hover:bg-slate-600 hover:shadow-lg hover:shadow-blue-500/50"
           >
             <span data-selected-label><%= @ticket.status.presence || "Open" %></span>
@@ -138,7 +138,7 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex flex-wrap items-center gap-3">
       <% if preview_mode? %>
         <button type="button" disabled class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold shadow-lg shadow-blue-500/30 opacity-50 cursor-not-allowed" title="Disabled in preview mode">
           <%= @ticket.new_record? ? "Create Ticket" : "Update Ticket" %> (disabled in preview)

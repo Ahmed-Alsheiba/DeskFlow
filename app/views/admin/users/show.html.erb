@@ -1,14 +1,14 @@
 <div class="min-h-screen bg-slate-50 text-slate-900">
-  <div class="mx-auto max-w-5xl px-6 py-12">
+  <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
     <%= link_to "&larr; Back to Dashboard".html_safe, admin_dashboard_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
 
-    <div class="mt-4 flex items-center gap-3">
-      <h1 class="text-3xl font-bold tracking-tight text-slate-900"><%= user_display_name(@user) %></h1>
-      <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+    <div class="mt-4 flex flex-wrap items-center gap-3">
+      <h1 class="min-w-0 break-words text-2xl sm:text-3xl font-bold tracking-tight text-slate-900"><%= user_display_name(@user) %></h1>
+      <span class="shrink-0 rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
         <%= @user.role.capitalize %>
       </span>
       <% if @user.suspended? %>
-        <span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Suspended</span>
+        <span class="shrink-0 rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Suspended</span>
       <% end %>
     </div>
 
@@ -16,7 +16,7 @@
       <dl class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <dt class="text-sm font-medium text-slate-500">Email</dt>
-          <dd class="mt-1 text-sm text-slate-900"><%= user_email_display(@user) %></dd>
+          <dd class="mt-1 text-sm text-slate-900 wrap-anywhere"><%= user_email_display(@user) %></dd>
         </div>
         <div>
           <dt class="text-sm font-medium text-slate-500">Job Title</dt>
@@ -53,13 +53,14 @@
     </div>
 
     <section class="mt-12">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-xl font-semibold text-slate-900">Claimed Tickets</h2>
         <span class="text-sm text-slate-500"><%= @claimed_tickets.length %> records</span>
       </div>
 
       <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
+        <%= render "admin/shared/ticket_cards", tickets: @claimed_tickets, empty_message: "No claimed tickets." %>
+        <div class="hidden overflow-x-auto md:block">
           <table class="min-w-full divide-y divide-slate-200 text-sm">
             <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
               <tr>
@@ -94,13 +95,14 @@
     </section>
 
     <section class="mt-12">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-wrap items-center justify-between gap-2">
         <h2 class="text-xl font-semibold text-slate-900">Submitted Tickets</h2>
         <span class="text-sm text-slate-500"><%= @submitted_tickets.length %> records</span>
       </div>
 
       <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div class="overflow-x-auto">
+        <%= render "admin/shared/ticket_cards", tickets: @submitted_tickets, empty_message: "No submitted tickets." %>
+        <div class="hidden overflow-x-auto md:block">
           <table class="min-w-full divide-y divide-slate-200 text-sm">
             <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
               <tr>
@@ -173,7 +175,7 @@
         </div>
       </section>
 
-      <dialog id="suspend-user-dialog-<%= @user.id %>" class="fixed inset-0 m-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 backdrop:bg-slate-900/40">
+      <dialog id="suspend-user-dialog-<%= @user.id %>" class="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 backdrop:bg-slate-900/40">
         <div class="p-6 border-b border-slate-200">
           <h3 class="text-lg font-semibold">Suspend <%= user_display_name(@user) %></h3>
           <p class="mt-1 text-sm text-slate-500">The user will be signed out and blocked from signing in until reinstated. A reason is required.</p>
@@ -205,7 +207,7 @@
         </div>
       </section>
 
-      <dialog id="remove-user-dialog-<%= @user.id %>" class="fixed inset-0 m-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 backdrop:bg-slate-900/40">
+      <dialog id="remove-user-dialog-<%= @user.id %>" class="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 backdrop:bg-slate-900/40">
         <div class="p-6 border-b border-slate-200">
           <h3 class="text-lg font-semibold">Remove <%= user_display_name(@user) %></h3>
           <p class="mt-1 text-sm text-slate-500">This archives the user's record, reverts their open tickets to the pool, and permanently deletes the account. A termination report is required.</p>
