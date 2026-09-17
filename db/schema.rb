@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_08_102338) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_17_132037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,9 +86,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_08_102338) do
     t.datetime "suspended_at"
     t.bigint "suspended_by_id"
     t.text "suspension_reason"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["suspended_at"], name: "index_users_on_suspended_at"
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
   add_foreign_key "comments", "terminated_users", column: "author_terminated_user_id", on_delete: :nullify

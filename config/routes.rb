@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       member do
         patch :suspend
         patch :reinstate
+        patch :unlock
       end
     end
     resources :terminated_users, only: [ :index, :show ]

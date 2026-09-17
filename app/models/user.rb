@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  # :confirmable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :lockable
 
   # Roles
   # "preview" is a locked-down, read-only demo account (see PreviewSessionsController
@@ -63,6 +63,27 @@ class User < ApplicationRecord
 
   def inactive_message
     suspended? ? :suspended : super
+  end
+
+  # Sudo-style password re-check for sensitive actions (admin remove/suspend,
+  # account edit). Routed through Devise lockable so wrong guesses count toward
+  # the same lockout as the sign-in form; a correct password clears the count.
+  def confirm_password(password)
+    confirmed = valid_for_authentication? { valid_password?(password) }
+    reset_failed_attempts! if confirmed
+    confirmed
+  end
+
+  # The demo account's password is random and public sign-in with its email
+  # always fails, so letting it lock would let anyone break the one-click preview.
+  def lock_access!(opts = {})
+    super unless preview?
+  end
+
+  # Devise mails (password reset, unlock instructions) go through the job queue,
+  # so a mail outage can't turn a failed sign-in into a 500.
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
   end
 
   # Removal and suspension share the same tiers: managers act on staff only;

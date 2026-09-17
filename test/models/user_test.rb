@@ -182,4 +182,21 @@ class UserTest < ActiveSupport::TestCase
     assert User.exists?(@staff.id)
     assert_equal "In Progress", assigned_open.reload.status
   end
+
+  # --- confirm_password / lockable ---------------------------------------------------
+  test "wrong passwords count toward the lockout and a correct one clears the count" do
+    assert_not @admin.confirm_password("wrong")
+    assert_equal 1, @admin.reload.failed_attempts
+    assert @admin.confirm_password("password")
+    assert_equal 0, @admin.reload.failed_attempts
+
+    Devise.maximum_attempts.times { @admin.confirm_password("wrong") }
+    assert @admin.reload.access_locked?
+    assert_not @admin.confirm_password("password"), "a locked account can't confirm even with the right password"
+  end
+
+  test "the preview demo account never locks" do
+    (Devise.maximum_attempts + 1).times { @preview.confirm_password("wrong") }
+    assert_not @preview.reload.access_locked?
+  end
 end

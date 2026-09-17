@@ -10,6 +10,9 @@
       <% if @user.suspended? %>
         <span class="shrink-0 rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">Suspended</span>
       <% end %>
+      <% if @user.access_locked? %>
+        <span class="shrink-0 rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-orange-700">Locked</span>
+      <% end %>
     </div>
 
     <div class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -136,6 +139,20 @@
       </div>
     </section>
 
+    <% if @user.access_locked? %>
+      <section class="mt-12">
+        <div class="rounded-2xl border border-orange-200 bg-orange-50 p-6 shadow-sm">
+          <h2 class="text-lg font-semibold text-orange-800">Account Locked</h2>
+          <p class="mt-1 text-sm text-orange-700">
+            Locked after too many wrong password attempts. It unlocks automatically at <%= (@user.locked_at + User.unlock_in).in_time_zone.strftime("%b %d, %Y %H:%M %Z") %>, or when the user follows the emailed unlock link.
+          </p>
+          <% if @user.suspendable_by?(current_user) %>
+            <%= button_to "Unlock User", unlock_admin_user_path(@user), method: :patch, class: "mt-4 bg-orange-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
     <% if @user.suspended? %>
       <section class="mt-12">
         <div class="rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
@@ -182,7 +199,9 @@
         </div>
         <div class="p-6">
           <%= form_with url: suspend_admin_user_path(@user), method: :patch do |f| %>
-            <%= text_area_tag "suspension[reason]", nil, placeholder: "Reason for suspension...", rows: 4, required: true, minlength: 1, class: "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" %>
+            <%= text_area_tag "suspension[reason]", params.dig(:suspension, :reason), placeholder: "Reason for suspension...", rows: 4, required: true, minlength: 1, class: "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" %>
+            <%= label_tag "suspension_password", "Confirm with your password", class: "mt-4 block text-sm font-medium text-slate-700" %>
+            <%= password_field_tag "suspension[password]", nil, id: "suspension_password", required: true, autocomplete: "current-password", class: "mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" %>
             <div class="mt-4 flex gap-2">
               <%= f.submit "Suspend User", class: "bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400" %>
               <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 text-sm font-semibold transition hover:bg-slate-100" onclick="document.getElementById('suspend-user-dialog-<%= @user.id %>').close()">
@@ -214,7 +233,9 @@
         </div>
         <div class="p-6">
           <%= form_with url: admin_user_path(@user), method: :delete do |f| %>
-            <%= text_area_tag "termination[reason]", nil, placeholder: "Termination report / reason for removal...", rows: 4, required: true, minlength: 1, class: "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20" %>
+            <%= text_area_tag "termination[reason]", params.dig(:termination, :reason), placeholder: "Termination report / reason for removal...", rows: 4, required: true, minlength: 1, class: "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20" %>
+            <%= label_tag "termination_password", "Confirm with your password", class: "mt-4 block text-sm font-medium text-slate-700" %>
+            <%= password_field_tag "termination[password]", nil, id: "termination_password", required: true, autocomplete: "current-password", class: "mt-1 w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20" %>
             <div class="mt-4 flex gap-2">
               <%= f.submit "Remove User", class: "bg-rose-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500" %>
               <button type="button" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 text-sm font-semibold transition hover:bg-slate-100" onclick="document.getElementById('remove-user-dialog-<%= @user.id %>').close()">
@@ -224,6 +245,10 @@
           <% end %>
         </div>
       </dialog>
+    <% end %>
+
+    <% if @reopen_dialog %>
+      <script>document.getElementById('<%= @reopen_dialog %>').showModal()</script>
     <% end %>
   </div>
 </div>

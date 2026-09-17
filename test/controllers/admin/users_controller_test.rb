@@ -47,23 +47,56 @@ module Admin
     end
 
     # --- destroy -----------------------------------------------------------------------
-    test "admin can terminate a staff user with a reason" do
+    test "admin can terminate a staff user with a reason and the user is emailed" do
       sign_in @admin
       assert_difference -> { User.count } => -1, -> { TerminatedUser.count } => 1 do
-        delete admin_user_path(@staff), params: { termination: { reason: "Policy violation" } }
+        perform_enqueued_jobs do
+          delete admin_user_path(@staff), params: { termination: { reason: "Policy violation", password: "password" } }
+        end
       end
       assert_redirected_to admin_dashboard_path
       archived = TerminatedUser.order(:created_at).last
       assert_equal @staff.email, archived.email
       assert_equal "Policy violation", archived.reason
+
+      mail = ActionMailer::Base.deliveries.last
+      assert_equal [ @staff.email ], mail.to
+      assert_no_match "Policy violation", mail.body.encoded
     end
 
     test "manager can terminate a staff user" do
       sign_in @manager
       assert_difference -> { User.count } => -1, -> { TerminatedUser.count } => 1 do
-        delete admin_user_path(@staff), params: { termination: { reason: "Left the company" } }
+        delete admin_user_path(@staff), params: { termination: { reason: "Left the company", password: "password" } }
       end
       assert_redirected_to admin_dashboard_path
+    end
+
+    test "termination requires the acting admin's correct password" do
+      sign_in @admin
+      assert_no_difference -> { User.count }, -> { TerminatedUser.count } do
+        assert_no_enqueued_emails do
+          delete admin_user_path(@staff), params: { termination: { reason: "Typed report survives", password: "wrong" } }
+        end
+      end
+      assert_response :unprocessable_entity
+      assert_match "Typed report survives", response.body
+      assert_match "Incorrect password", response.body
+    end
+
+    test "repeated wrong removal passwords lock the admin and end the session" do
+      sign_in @admin
+      (Devise.maximum_attempts - 1).times do
+        delete admin_user_path(@staff), params: { termination: { reason: "x", password: "wrong" } }
+        assert_response :unprocessable_entity
+      end
+      delete admin_user_path(@staff), params: { termination: { reason: "x", password: "wrong" } }
+      assert_redirected_to new_user_session_path
+      assert @admin.reload.access_locked?
+      assert User.exists?(@staff.id)
+
+      get admin_dashboard_path
+      assert_redirected_to new_user_session_path
     end
 
     test "manager cannot terminate an admin" do
@@ -107,12 +140,21 @@ module Admin
     # --- suspend / reinstate -----------------------------------------------------------
     test "admin can suspend a staff user with a reason" do
       sign_in @admin
-      patch suspend_admin_user_path(@staff), params: { suspension: { reason: "Under review" } }
+      patch suspend_admin_user_path(@staff), params: { suspension: { reason: "Under review", password: "password" } }
       assert_redirected_to admin_user_path(@staff)
       @staff.reload
       assert @staff.suspended?
       assert_equal @admin.id, @staff.suspended_by_id
       assert_equal "Under review", @staff.suspension_reason
+    end
+
+    test "suspension requires the acting admin's correct password" do
+      sign_in @admin
+      patch suspend_admin_user_path(@staff), params: { suspension: { reason: "Typed reason survives", password: "wrong" } }
+      assert_response :unprocessable_entity
+      assert_match "Typed reason survives", response.body
+      assert_match "suspend-user-dialog-#{@staff.id}').showModal()", response.body
+      assert_not @staff.reload.suspended?
     end
 
     test "suspension requires a reason" do
@@ -135,6 +177,27 @@ module Admin
       patch reinstate_admin_user_path(@staff)
       assert_redirected_to admin_user_path(@staff)
       assert_not @staff.reload.suspended?
+    end
+
+    # --- unlock -------------------------------------------------------------------------
+    test "admin sees the locked state and can unlock a locked user" do
+      @staff.lock_access!(send_instructions: false)
+      sign_in @admin
+      get admin_user_path(@staff)
+      assert_match "Unlock User", response.body
+
+      patch unlock_admin_user_path(@staff)
+      assert_redirected_to admin_user_path(@staff)
+      assert_not @staff.reload.access_locked?
+      assert_equal 0, @staff.failed_attempts
+    end
+
+    test "manager cannot unlock an admin" do
+      @admin.lock_access!(send_instructions: false)
+      sign_in @manager
+      patch unlock_admin_user_path(@admin)
+      assert_redirected_to admin_user_path(@admin)
+      assert @admin.reload.access_locked?
     end
 
     test "staff cannot suspend anyone" do
