@@ -25,5 +25,10 @@ Rails.application.routes.draw do
       end
     end
     resources :terminated_users, only: [ :index, :show ]
+    # SMTP config stored in the DB instead of at deploy time. `test` sends a one-off email
+    # with the values currently in the form, before they're saved.
+    resource :mail_settings, only: [ :edit, :update ] do
+      post :test
+    end
   end
 end

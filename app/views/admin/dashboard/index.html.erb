@@ -59,6 +59,9 @@
         <h2 class="text-xl font-semibold text-slate-900">Users</h2>
         <div class="flex items-center gap-4">
           <%= link_to "Terminated Users &rarr;".html_safe, admin_terminated_users_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+          <% if current_user.admin? %>
+            <%= link_to "Mail Settings &rarr;".html_safe, edit_admin_mail_settings_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+          <% end %>
           <span class="text-sm text-slate-500"><%= @users.length %> records</span>
         </div>
       </div>

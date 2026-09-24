@@ -42,6 +42,21 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: keys)
   end
 
+  # Sudo-style re-auth for sensitive actions: a walked-away-from session can't act. Wrong
+  # guesses count toward the sign-in lockout; hitting it ends the session. Returns false
+  # after setting flash.now, leaving the caller to re-render its form.
+  def password_confirmed?(password)
+    return true if current_user.confirm_password(password.to_s)
+
+    if current_user.access_locked?
+      sign_out current_user
+      redirect_to new_user_session_path, alert: t("devise.failure.locked")
+    else
+      flash.now[:alert] = "Incorrect password. No changes were made."
+    end
+    false
+  end
+
   def require_admin_or_manager!
     return if current_user&.admin? || current_user&.manager? || current_user&.preview?
 

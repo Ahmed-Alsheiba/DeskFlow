@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_17_132037) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_22_094737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_17_132037) do
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["author_terminated_user_id"], name: "index_comments_on_author_terminated_user_id"
     t.index ["ticket_id"], name: "index_comments_on_ticket_id"
+  end
+
+  create_table "mail_settings", force: :cascade do |t|
+    t.boolean "enabled", default: true, null: false
+    t.string "address"
+    t.integer "port", default: 587
+    t.string "user_name"
+    t.text "password"
+    t.string "from_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "terminated_users", force: :cascade do |t|

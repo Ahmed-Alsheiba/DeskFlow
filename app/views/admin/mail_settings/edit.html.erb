@@ -1,0 +1,112 @@
+<% field = "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" %>
+<% label = "mb-1 block text-sm font-medium text-slate-700" %>
+
+<div class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
+    <%= link_to "&larr; Back to Dashboard".html_safe, admin_dashboard_path, class: "text-sm font-medium text-blue-600 hover:underline" %>
+
+    <h1 class="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">Mail Settings</h1>
+    <p class="mt-1 text-sm text-slate-500">
+      DeskFlow sends password resets, unlock links and account-removal notices through this SMTP server.
+      Saved here (the password encrypted), so mail works without a redeploy. Blank fields fall back to
+      the <code class="rounded bg-slate-100 px-1">smtp</code> block in the app's credentials.
+    </p>
+
+    <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <%= form_with model: @setting, url: admin_mail_settings_path, method: :patch, class: "space-y-5",
+            data: { controller: "mail-settings", "mail-settings-test-url-value": test_admin_mail_settings_path } do |form| %>
+
+        <% if @setting.errors.any? %>
+          <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            <%= @setting.errors.full_messages.to_sentence %>
+          </div>
+        <% end %>
+
+        <label class="flex items-center gap-3 text-sm font-medium text-slate-700">
+          <%= form.check_box :enabled, class: "h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" %>
+          Send emails
+        </label>
+
+        <p class="rounded-lg bg-slate-50 px-4 py-3 text-sm">
+          <% if !@setting.enabled? %>
+            <span class="font-semibold text-slate-600">Off</span> — nothing is emailed. Everything else keeps working.
+          <% elsif @setting.configured? %>
+            <span class="font-semibold text-emerald-700">On</span> — sending via <%= @setting.resolved_address %> as <%= @setting.mail_from %>.
+          <% else %>
+            <span class="font-semibold text-amber-700">Not configured yet</span> — fill in the host, username and password below.
+          <% end %>
+        </p>
+
+        <div>
+          <%= form.label :from_address, "From address", class: label %>
+          <%= form.email_field :from_address, placeholder: "no-reply@yourdomain.com", autocomplete: "off", class: field %>
+          <p class="mt-1 text-xs text-slate-500">Must be a domain you've verified with the provider, or mail gets rejected.</p>
+        </div>
+
+        <div>
+          <%= form.label :address, "Provider", class: label %>
+          <select class="<%= field %>" data-action="change->mail-settings#chooseHost">
+            <option value="">Choose a provider…</option>
+            <% MailSetting::SMTP_HOSTS.each do |name, host| %>
+              <option value="<%= host %>" data-hint="<%= MailSetting::USER_NAME_HINTS[host] %>" <%= "selected" if @setting.address == host %>><%= name %></option>
+            <% end %>
+            <option value="custom">Custom…</option>
+          </select>
+        </div>
+
+        <div>
+          <%= form.label :user_name, "Username", class: label %>
+          <%= form.text_field :user_name, autocomplete: "off",
+                placeholder: MailSetting::USER_NAME_HINTS[@setting.address] || "SMTP username",
+                data: { "mail-settings-target": "userName" }, class: field %>
+        </div>
+
+        <div>
+          <%= form.label :password, "Password / API key", class: label %>
+          <%= form.password_field :password, autocomplete: "off", value: nil,
+                placeholder: @setting.password.present? ? "•••••••• (leave blank to keep)" : "SMTP password or API key",
+                class: field %>
+        </div>
+
+        <details class="rounded-lg border border-slate-200 px-4 py-3" <%= "open" if @setting.address.present? && !MailSetting::SMTP_HOSTS.value?(@setting.address) %>>
+          <summary class="cursor-pointer select-none text-sm font-medium text-slate-700">Advanced — host &amp; port</summary>
+          <div class="mt-3 space-y-4">
+            <div>
+              <%= form.label :address, "SMTP host", class: label %>
+              <%= form.text_field :address, placeholder: "smtp.example.com", autocomplete: "off",
+                    data: { "mail-settings-target": "address" }, class: field %>
+            </div>
+            <div>
+              <%= form.label :port, "Port", class: label %>
+              <select class="<%= field %> mb-2" data-action="change->mail-settings#choosePort">
+                <% MailSetting::SMTP_PORTS.each do |name, port| %>
+                  <option value="<%= port %>" <%= "selected" if @setting.port == port %>><%= name %></option>
+                <% end %>
+                <option value="custom">Custom…</option>
+              </select>
+              <%= form.number_field :port, placeholder: "587", data: { "mail-settings-target": "port" }, class: field %>
+              <p class="mt-1 text-xs text-slate-500">465 uses TLS from the first byte; everything else upgrades with STARTTLS. Picked automatically.</p>
+            </div>
+          </div>
+        </details>
+
+        <div class="border-t border-slate-200 pt-5">
+          <%# Deliberately outside the mail_setting scope: it authorizes the request, it isn't
+              an attribute of the record (and strong params would log it as unpermitted). %>
+          <%= label_tag "current_password", "Confirm with your password", class: label %>
+          <%= password_field_tag "current_password", nil, required: true,
+                autocomplete: "current-password", class: field %>
+          <p class="mt-1 text-xs text-slate-500">Required to save. Not needed to send a test email.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <%= form.submit "Save Settings", class: "bg-blue-600 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+          <button type="button" data-action="mail-settings#test" class="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-600 text-sm font-semibold transition hover:bg-slate-100">
+            Send Test Email
+          </button>
+          <span data-mail-settings-target="testResult" class="text-sm text-slate-500"></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

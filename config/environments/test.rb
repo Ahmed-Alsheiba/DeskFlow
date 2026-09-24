@@ -50,4 +50,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Fixed (non-secret) Active Record Encryption keys so the suite never needs the real
+  # ones; dev/prod read theirs from credentials.active_record_encryption.
+  config.active_record.encryption.primary_key = "test_ar_encryption_primary_key__"
+  config.active_record.encryption.deterministic_key = "test_ar_encryption_deterministic"
+  config.active_record.encryption.key_derivation_salt = "test_ar_encryption_derivation_sa"
+  config.active_record.encryption.encrypt_fixtures = true
 end

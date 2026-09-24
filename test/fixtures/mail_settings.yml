@@ -1,0 +1,10 @@
+# The single mail configuration row (MailSetting.current). Configured and enabled so the
+# suite exercises the normal "mail works" path; tests that need it off toggle it themselves.
+# The password is encrypted by config.active_record.encryption.encrypt_fixtures (test.rb).
+one:
+  enabled: true
+  address: smtp.example.test
+  port: 587
+  user_name: deskflow
+  password: test-smtp-password
+  from_address: helpdesk@example.test
