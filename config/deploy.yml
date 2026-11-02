@@ -54,7 +54,7 @@ builder:
 
 accessories:
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2026.10.4
     host: 192.168.8.223
     cmd: tunnel --no-autoupdate run
     env:
